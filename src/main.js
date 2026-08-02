@@ -27,6 +27,8 @@ import { renderTasks } from "./ui/taskRenderer.js";
 import { renderProjectDetails } from "./ui/layoutRenderer.js";
 import { renderNoProjectsState } from "./ui/emptyStateRenderer.js";
 
+import { initializeProjectForm } from "./forms/projectForm.js";
+
 function renderApplication() {
   const allProjects = getAllProjects();
 
@@ -57,6 +59,7 @@ renderProjects(
 function initializeApplication() {
   setProjects(projects);
   setTasks(tasks);
+  initializeProjectForm();
 
   const firstProject = getFirstProject();
 

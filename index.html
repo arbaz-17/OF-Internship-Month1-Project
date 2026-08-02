@@ -5,6 +5,33 @@
 
   <main class="app-layout">
     <aside id="project-list"></aside>
+    <section class="project-form">
+  <h2>Create Project</h2>
+
+  <form id="project-form">
+    <input
+      type="text"
+      id="project-name"
+      placeholder="Project Name"
+      required
+    />
+
+    <input
+      type="text"
+      id="project-category"
+      placeholder="Category"
+    />
+
+    <textarea
+      id="project-description"
+      placeholder="Description"
+    ></textarea>
+
+    <button type="submit">
+      Create Project
+    </button>
+  </form>
+</section>
 
     <section class="content">
       <div id="project-details"></div>
