@@ -16,6 +16,7 @@ import {
 import { renderProjects } from "./ui/projectRenderer.js";
 import { renderTasks } from "./ui/taskRenderer.js";
 import { renderProjectDetails } from "./ui/layoutRenderer.js";
+import { renderNoProjectsState } from "./ui/emptyStateRenderer.js";
 
 function renderApplication() {
   const projects = getAllProjects();
@@ -23,6 +24,11 @@ function renderApplication() {
   const selectedProject = getProjectById(
     getSelectedProjectId()
   );
+
+  if (!selectedProject) {
+    renderNoProjectsState();
+    return;
+  }
 
   const tasks = getTasksByProjectId(selectedProject.id);
 
@@ -47,6 +53,7 @@ function initializeApplication() {
   const firstProject = getFirstProject();
 
   if (!firstProject) {
+    renderNoProjectsState();
     return;
   }
 
