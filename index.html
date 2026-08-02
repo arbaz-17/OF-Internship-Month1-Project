@@ -35,7 +35,55 @@
 
     <section class="content">
       <div id="project-details"></div>
+<form id="task-form">
 
+    <input
+        id="task-title"
+        placeholder="Task Title"
+        required>
+
+    <textarea
+        id="task-description"
+        placeholder="Description">
+    </textarea>
+
+    <select id="task-priority">
+
+        <option value="low">
+            Low
+        </option>
+
+        <option value="medium">
+            Medium
+        </option>
+
+        <option value="high">
+            High
+        </option>
+
+    </select>
+
+    <select id="task-status">
+
+        <option value="todo">
+            Todo
+        </option>
+
+        <option value="in-progress">
+            In Progress
+        </option>
+
+        <option value="done">
+            Done
+        </option>
+
+    </select>
+
+    <button>
+        Create Task
+    </button>
+
+</form>
       <div id="task-list"></div>
     </section>
   </main>

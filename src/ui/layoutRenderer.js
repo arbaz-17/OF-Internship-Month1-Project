@@ -3,10 +3,25 @@ export function renderProjectDetails(project) {
 
   container.innerHTML = `
     <h2>${project.name}</h2>
+
     <p>${project.description}</p>
 
     <p><strong>Category:</strong> ${project.category}</p>
+
     <p><strong>Status:</strong> ${project.status}</p>
+
     <p><strong>Priority:</strong> ${project.priority}</p>
+
+    <button
+      id="edit-project-btn"
+      data-project-id="${project.id}">
+      Edit Project
+    </button>
+
+    <button
+      id="delete-project-btn"
+      data-project-id="${project.id}">
+      Delete Project
+    </button>
   `;
 }

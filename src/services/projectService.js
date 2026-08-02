@@ -1,14 +1,17 @@
 import {
   getProjects,
   addProject,
+  updateProjectState,
+  removeProjectState,
+  removeTasksByProjectId,
 } from "../state/appState.js";
 
 export function getAllProjects() {
-  return getProjects;
+  return getProjects();
 }
 
 export function getFirstProject() {
-  return getProjects[0];
+  return getProjects()[0];
 }
 
 export function getProjectById(projectId) {
@@ -16,6 +19,7 @@ export function getProjectById(projectId) {
     (project) => project.id === projectId
   );
 }
+
 export function projectExists(projectId) {
   return getProjects().some(
     (project) => project.id === projectId
@@ -32,7 +36,7 @@ export function createProject(projectData) {
   const nextProjectId =
     projects.length === 0
       ? 1
-      : Math.max(...projects.map(project => project.id)) + 1;
+      : Math.max(...projects.map((project) => project.id)) + 1;
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -52,4 +56,41 @@ export function createProject(projectData) {
   addProject(newProject);
 
   return newProject;
+}
+
+export function updateExistingProject(projectId, projectData) {
+  const existingProject = getProjectById(projectId);
+
+  if (!existingProject) {
+    throw new Error("Project not found.");
+  }
+
+  if (!projectData.name?.trim()) {
+    throw new Error("Project name is required.");
+  }
+
+  const updatedProject = {
+    ...existingProject,
+    ...projectData,
+    name: projectData.name.trim(),
+    updated_at: new Date().toISOString().split("T")[0],
+  };
+
+  updateProjectState(updatedProject);
+
+  return updatedProject;
+}
+
+export function deleteExistingProject(projectId) {
+  const project = getProjectById(projectId);
+
+  if (!project) {
+    throw new Error("Project not found.");
+  }
+
+  removeProjectState(projectId);
+
+  removeTasksByProjectId(projectId);
+
+  return project;
 }

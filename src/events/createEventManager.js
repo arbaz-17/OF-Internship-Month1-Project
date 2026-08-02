@@ -46,15 +46,10 @@ export default function createEventManager() {
 
     if (!handlers) return;
 
-    handlers.forEach((handler) => {
-      handler(payload);
-    });
+    handlers.forEach((handler) => handler(payload));
   }
 
   function once(event, handler) {
-    validateEvent(event);
-    validateHandler(handler);
-
     function wrapper(payload) {
       handler(payload);
       unsubscribe(event, wrapper);
