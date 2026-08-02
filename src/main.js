@@ -8,7 +8,11 @@ import {
   getTasksByProjectId,
 } from "./services/taskService.js";
 
+import { projects, tasks } from "./data/sampleData.js";
+
 import {
+  setProjects,
+  setTasks,
   getSelectedProjectId,
   setSelectedProjectId,
 } from "./state/appState.js";
@@ -50,6 +54,9 @@ function handleProjectSelection(projectId) {
 }
 
 function initializeApplication() {
+  setProjects(projects);
+  setTasks(tasks);
+
   const firstProject = getFirstProject();
 
   if (!firstProject) {

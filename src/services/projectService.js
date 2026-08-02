@@ -1,17 +1,20 @@
-import { projects } from "../data/sampleData.js";
+import { getProjects } from "../state/appState.js";
 
 export function getAllProjects() {
-  return projects;
+  return getProjects;
 }
 
 export function getFirstProject() {
-  return projects[0];
+  return getProjects[0];
 }
 
 export function getProjectById(projectId) {
-  return projects.find((project) => project.id === projectId);
+  return getProjects().find(
+    (project) => project.id === projectId
+  );
 }
-
 export function projectExists(projectId) {
-  return projects.some((project) => project.id === projectId);
+  return getProjects().some(
+    (project) => project.id === projectId
+  );
 }

@@ -1,11 +1,13 @@
-import { tasks } from "../data/sampleData.js";
+import { getTasks } from "../state/appState.js";
 
 export function getAllTasks() {
-  return tasks;
+  return getTasks ;
 }
 
 export function getTasksByProjectId(projectId) {
-  return tasks.filter((task) => task.project_id === projectId);
+  return getTasks().filter(
+    (task) => task.project_id === projectId
+  );
 }
 
 
@@ -15,5 +17,7 @@ export function getTaskCountByProjectId(projectId) {
 
 
 export function getTasksByStatus(status) {
-  return tasks.filter((task) => task.status === status);
+  return getTasks().filter(
+    (task) => task.status === status
+  );
 }
