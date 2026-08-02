@@ -31,3 +31,24 @@ export function getSelectedProjectId() {
 export function setSelectedProjectId(projectId) {
   selectedProjectId = projectId;
 }
+
+
+// ---------- Project Operations ----------
+
+export function addProject(project) {
+  projects.push(project);
+}
+
+export function updateProject(updatedProject) {
+  projects = projects.map((project) =>
+    project.id === updatedProject.id
+      ? updatedProject
+      : project
+  );
+}
+
+export function removeProject(projectId) {
+  projects = projects.filter(
+    (project) => project.id !== projectId
+  );
+}
