@@ -3,6 +3,8 @@ let tasks = [];
 
 let selectedProjectId = null;
 let editingProjectId = null;
+let isLoading = false;
+let error = null;
 
 // ==================== Projects ====================
 
@@ -88,4 +90,27 @@ export function setEditingProjectId(projectId) {
 
 export function clearEditingProjectId() {
   editingProjectId = null;
+}
+
+
+// ==================== UI States ====================
+
+export function getLoading() {
+  return isLoading;
+}
+
+export function setLoading(loading) {
+  isLoading = loading;
+}
+
+export function getError() {
+  return error;
+}
+
+export function setError(errorMessage) {
+  error = errorMessage;
+}
+
+export function clearError() {
+  error = null;
 }
