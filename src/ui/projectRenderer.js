@@ -7,12 +7,17 @@ export function renderProjects(
 
   container.innerHTML = "";
 
+  if (projects.length === 0) {
+    container.innerHTML = "<p>No projects available.</p>";
+    return;
+  }
+
   projects.forEach((project) => {
     const button = document.createElement("button");
 
+    button.className = "project-item";
     button.textContent = project.name;
-
-    button.classList.add("project-item");
+    button.dataset.projectId = project.id;
 
     if (project.id === selectedProjectId) {
       button.classList.add("selected");

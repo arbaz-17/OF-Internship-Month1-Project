@@ -1,7 +1,14 @@
+import { projects, tasks } from "./data/sampleData.js";
+
+import {
+  setProjects,
+  setTasks,
+} from "./state/appState.js";
+
 import {
   getAllProjects,
-  getProjectById,
   getFirstProject,
+  getProjectById,
 } from "./services/projectService.js";
 
 import {
@@ -10,12 +17,36 @@ import {
 
 import {
   getSelectedProjectId,
-  setSelectedProjectId,
 } from "./state/appState.js";
 
-import { renderProjects } from "./ui/projectRenderer.js";
-import { renderTasks } from "./ui/taskRenderer.js";
-import { renderProjectDetails } from "./ui/layoutRenderer.js";
+import {
+  renderProjects,
+} from "./ui/projectRenderer.js";
+
+import {
+  renderProjectDetails,
+} from "./ui/layoutRenderer.js";
+
+import {
+  renderTasks,
+} from "./ui/taskRenderer.js";
+
+import {
+  renderNoProjectsState,
+} from "./ui/emptyStateRenderer.js";
+
+import {
+  initializeProjectForm,
+} from "./forms/projectForm.js";
+import { initializeTaskForm } from "./forms/taskForm.js";
+
+import {
+  selectProject,
+} from "./controllers/projectController.js";
+
+import eventBus from "./events/eventBus.js";
+
+import { EVENTS } from "./events/eventNames.js";
 
 function renderApplication() {
   const projects = getAllProjects();
@@ -24,12 +55,19 @@ function renderApplication() {
     getSelectedProjectId()
   );
 
-  const tasks = getTasksByProjectId(selectedProject.id);
+  if (!selectedProject) {
+    renderNoProjectsState();
+    return;
+  }
+
+  const tasks = getTasksByProjectId(
+    selectedProject.id
+  );
 
   renderProjects(
     projects,
     selectedProject.id,
-    handleProjectSelection
+    selectProject
   );
 
   renderProjectDetails(selectedProject);
@@ -37,22 +75,57 @@ function renderApplication() {
   renderTasks(tasks);
 }
 
-function handleProjectSelection(projectId) {
-  setSelectedProjectId(projectId);
-
-  renderApplication();
-}
-
 function initializeApplication() {
+  setProjects(projects);
+
+  setTasks(tasks);
+
+  initializeProjectForm();
+  initializeTaskForm();
+
+  eventBus.subscribe(
+    EVENTS.PROJECT_SELECTED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.PROJECT_UPDATED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.PROJECT_DELETED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.PROJECT_CREATED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+  EVENTS.TASK_CREATED,
+  renderApplication
+);
+
+eventBus.subscribe(
+  EVENTS.TASK_UPDATED,
+  renderApplication
+);
+
+eventBus.subscribe(
+  EVENTS.TASK_DELETED,
+  renderApplication
+);
+
   const firstProject = getFirstProject();
 
   if (!firstProject) {
+    renderNoProjectsState();
     return;
   }
 
-  setSelectedProjectId(firstProject.id);
-
-  renderApplication();
+  selectProject(firstProject.id);
 }
 
 initializeApplication();
