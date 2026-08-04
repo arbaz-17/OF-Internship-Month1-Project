@@ -1,6 +1,6 @@
 import { setProjects, setTasks } from "./state/appState.js";
 import {
-  getAllProjects,
+  getFilteredProjects,
   getFirstProject,
   getProjectById,
 } from "./services/projectService.js";
@@ -21,6 +21,8 @@ import { renderLoadingState } from "./ui/loadingStateRenderer.js";
 import { renderErrorState } from "./ui/errorStateRenderer.js";
 import { initializeProjectForm } from "./forms/projectForm.js";
 import { initializeTaskForm } from "./forms/taskForm.js";
+import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
+import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
 import { selectProject } from "./controllers/projectController.js";
 import eventBus from "./events/eventBus.js";
 import { EVENTS } from "./events/eventNames.js";
@@ -39,7 +41,7 @@ function renderApplication() {
     return;
   }
 
-  const projects = getAllProjects();
+  const projects = getFilteredProjects();
 
   const selectedProject = getProjectById(getSelectedProjectId());
 
@@ -97,6 +99,9 @@ async function initializeApplication() {
 
   initializeProjectForm();
   initializeTaskForm();
+  initializeProjectSearchForm();
+  initializeProjectSearchForm();
+initializeProjectFilterForm();
 
   eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
 

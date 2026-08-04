@@ -3,8 +3,14 @@ let tasks = [];
 
 let selectedProjectId = null;
 let editingProjectId = null;
+
 let isLoading = false;
 let error = null;
+
+let projectSearchQuery = "";
+
+let projectStatusFilter = "";
+let projectPriorityFilter = "";
 
 // ==================== Projects ====================
 
@@ -113,4 +119,34 @@ export function setError(errorMessage) {
 
 export function clearError() {
   error = null;
+}
+
+
+// ==================== Project Search ====================
+
+export function getProjectSearchQuery() {
+  return projectSearchQuery;
+}
+
+export function setProjectSearchQuery(query) {
+  projectSearchQuery = query;
+}
+
+export function clearProjectSearchQuery() {
+  projectSearchQuery = "";
+}
+
+
+// ==================== Project Filters ====================
+
+export function getProjectStatusFilter() {
+  return projectStatusFilter;
+}
+
+export function setProjectStatusFilter(status) {
+  projectStatusFilter = status;
+}
+
+export function clearProjectStatusFilter() {
+  projectStatusFilter = "";
 }

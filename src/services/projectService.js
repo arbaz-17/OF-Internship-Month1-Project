@@ -4,6 +4,9 @@ import {
   updateProjectState,
   removeProjectState,
   removeTasksByProjectId,
+    getProjectSearchQuery,
+  getProjectStatusFilter,
+  getProjectPriorityFilter,
 } from "../state/appState.js";
 
 export function getAllProjects() {
@@ -93,4 +96,38 @@ export function deleteExistingProject(projectId) {
   removeTasksByProjectId(projectId);
 
   return project;
+}
+
+export function getFilteredProjects() {
+  const searchQuery = getProjectSearchQuery()
+    .trim()
+    .toLowerCase();
+
+  const statusFilter =
+    getProjectStatusFilter();
+
+  const priorityFilter =
+    getProjectPriorityFilter();
+
+  return getAllProjects().filter((project) => {
+    const matchesSearch =
+      !searchQuery ||
+      project.name
+        .toLowerCase()
+        .includes(searchQuery);
+
+    const matchesStatus =
+      !statusFilter ||
+      project.status === statusFilter;
+
+    const matchesPriority =
+      !priorityFilter ||
+      project.priority === priorityFilter;
+
+    return (
+      matchesSearch &&
+      matchesStatus &&
+      matchesPriority
+    );
+  });
 }

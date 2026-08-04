@@ -4,7 +4,41 @@
   </header>
 
   <main class="app-layout">
+    <section class="project-search">
+  <input
+    type="search"
+    id="project-search"
+    placeholder="Search projects..."
+  />
+</section>
+
+<section class="project-filters">
+
+  <select id="project-status-filter">
+    <option value="">All Statuses</option>
+    <option value="todo">Todo</option>
+    <option value="in-progress">In Progress</option>
+    <option value="done">Done</option>
+  </select>
+
+  <select id="project-priority-filter">
+    <option value="">All Priorities</option>
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+  </select>
+
+  <button
+    type="button"
+    id="reset-project-filters">
+    Reset Filters
+  </button>
+
+</section>
+
+<aside id="project-list"></aside>
     <aside id="project-list"></aside>
+    
     <section class="project-form">
   <h2>Create Project</h2>
 
