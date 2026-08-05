@@ -19,10 +19,13 @@ export function initializeTaskForm() {
 
   form.addEventListener("submit", handleSubmit);
 
-  document.addEventListener("click", handleTaskActions);
+  document.addEventListener(
+    "click",
+    handleTaskActions
+  );
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
 
   const taskData = {
@@ -33,74 +36,103 @@ function handleSubmit(event) {
     status: document.getElementById("task-status").value,
   };
 
-  if (editingTaskId) {
-    updateTask(editingTaskId, taskData);
+  try {
+    if (editingTaskId) {
+      await updateTask(
+        editingTaskId,
+        taskData
+      );
 
-    editingTaskId = null;
+      editingTaskId = null;
+    } else {
+      await createNewTask(taskData);
+    }
 
     formReset();
-  } else {
-    createNewTask(taskData);
-
-    formReset();
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
   }
 }
 
-function handleTaskActions(event) {
-
-  const editButton = event.target.closest(".edit-task");
+async function handleTaskActions(event) {
+  const editButton =
+    event.target.closest(".edit-task");
 
   if (editButton) {
-    populateTaskForm(Number(editButton.dataset.taskId));
+    populateTaskForm(
+      editButton.dataset.taskId
+    );
     return;
   }
 
-  const deleteButton = event.target.closest(".delete-task");
+  const deleteButton =
+    event.target.closest(".delete-task");
 
   if (deleteButton) {
+    const confirmed = confirm(
+      "Delete this task?"
+    );
 
-    if (confirm("Delete this task?")) {
-      deleteTask(Number(deleteButton.dataset.taskId));
+    if (!confirmed) return;
+
+    try {
+      await deleteTask(
+        deleteButton.dataset.taskId
+      );
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
     }
 
     return;
   }
 
-  const statusSelect = event.target.closest(".task-status");
+  const statusSelect =
+    event.target.closest(".task-status");
 
   if (statusSelect) {
+    try {
+      const task = getTaskById(
+        statusSelect.dataset.taskId
+      );
 
-    const task = getTaskById(
-      Number(statusSelect.dataset.taskId)
-    );
-
-    updateTask(task.id, {
-      ...task,
-      status: statusSelect.value,
-    });
+      await updateTask(task.id, {
+        ...task,
+        status: statusSelect.value,
+      });
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
 
     return;
   }
 
-  const prioritySelect = event.target.closest(".task-priority");
+  const prioritySelect =
+    event.target.closest(".task-priority");
 
   if (prioritySelect) {
+    try {
+      const task = getTaskById(
+        prioritySelect.dataset.taskId
+      );
 
-    const task = getTaskById(
-      Number(prioritySelect.dataset.taskId)
-    );
-
-    updateTask(task.id, {
-      ...task,
-      priority: prioritySelect.value,
-    });
-
+      await updateTask(task.id, {
+        ...task,
+        priority: prioritySelect.value,
+      });
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
   }
-
 }
 
 function populateTaskForm(taskId) {
   const task = getTaskById(taskId);
+
+  if (!task) return;
 
   editingTaskId = taskId;
 

@@ -4,6 +4,14 @@ let tasks = [];
 let selectedProjectId = null;
 let editingProjectId = null;
 
+let isLoading = false;
+let error = null;
+
+let projectSearchQuery = "";
+
+let projectStatusFilter = "";
+let projectPriorityFilter = "";
+
 // ==================== Projects ====================
 
 export function getProjects() {
@@ -61,9 +69,11 @@ export function removeTaskState(taskId) {
 }
 
 export function removeTasksByProjectId(projectId) {
-  tasks = tasks.filter(
-    (task) => task.project_id !== projectId
-  );
+
+  tasks = tasks.filter((task) => {
+    return task.project_id !== projectId;
+  });
+
 }
 
 // ==================== Selected Project ====================
@@ -88,4 +98,73 @@ export function setEditingProjectId(projectId) {
 
 export function clearEditingProjectId() {
   editingProjectId = null;
+}
+
+
+// ==================== UI States ====================
+
+export function getLoading() {
+  return isLoading;
+}
+
+export function setLoading(loading) {
+  isLoading = loading;
+}
+
+export function getError() {
+  return error;
+}
+
+export function setError(errorMessage) {
+  error = errorMessage;
+}
+
+export function clearError() {
+  error = null;
+}
+
+
+// ==================== Project Search ====================
+
+export function getProjectSearchQuery() {
+  return projectSearchQuery;
+}
+
+export function setProjectSearchQuery(query) {
+  projectSearchQuery = query;
+}
+
+export function clearProjectSearchQuery() {
+  projectSearchQuery = "";
+}
+
+
+// ==================== Project Filters ====================
+
+// Status Filter
+
+export function getProjectStatusFilter() {
+  return projectStatusFilter;
+}
+
+export function setProjectStatusFilter(status) {
+  projectStatusFilter = status;
+}
+
+export function clearProjectStatusFilter() {
+  projectStatusFilter = "";
+}
+
+// Priority Filter
+
+export function getProjectPriorityFilter() {
+  return projectPriorityFilter;
+}
+
+export function setProjectPriorityFilter(priority) {
+  projectPriorityFilter = priority;
+}
+
+export function clearProjectPriorityFilter() {
+  projectPriorityFilter = "";
 }

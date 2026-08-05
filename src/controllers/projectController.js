@@ -20,8 +20,8 @@ export function selectProject(projectId) {
   });
 }
 
-export function createNewProject(projectData) {
-  const project = createProject(projectData);
+export async function createNewProject(projectData) {
+  const project = await createProject(projectData);
 
   selectProject(project.id);
 
@@ -32,11 +32,15 @@ export function createNewProject(projectData) {
   return project;
 }
 
-export function updateProject(projectId, projectData) {
-  const updatedProject = updateExistingProject(
-    projectId,
-    projectData
-  );
+export async function updateProject(
+  projectId,
+  projectData
+) {
+  const updatedProject =
+    await updateExistingProject(
+      projectId,
+      projectData
+    );
 
   eventBus.emit(EVENTS.PROJECT_UPDATED, {
     project: updatedProject,
@@ -45,8 +49,8 @@ export function updateProject(projectId, projectData) {
   return updatedProject;
 }
 
-export function deleteProject(projectId) {
-  deleteExistingProject(projectId);
+export async function deleteProject(projectId) {
+  await deleteExistingProject(projectId);
 
   const remainingProjects = getAllProjects();
 
