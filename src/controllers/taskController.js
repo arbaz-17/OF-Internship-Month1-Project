@@ -7,8 +7,8 @@ import {
   deleteExistingTask,
 } from "../services/taskService.js";
 
-export function createNewTask(taskData) {
-  const task = createTask(taskData);
+export async function createNewTask(taskData) {
+  const task = await createTask(taskData);
 
   eventBus.emit(EVENTS.TASK_CREATED, {
     task,
@@ -17,8 +17,11 @@ export function createNewTask(taskData) {
   return task;
 }
 
-export function updateTask(taskId, taskData) {
-  const task = updateExistingTask(
+export async function updateTask(
+  taskId,
+  taskData
+) {
+  const task = await updateExistingTask(
     taskId,
     taskData
   );
@@ -30,8 +33,8 @@ export function updateTask(taskId, taskData) {
   return task;
 }
 
-export function deleteTask(taskId) {
-  deleteExistingTask(taskId);
+export async function deleteTask(taskId) {
+  await deleteExistingTask(taskId);
 
   eventBus.emit(EVENTS.TASK_DELETED, {
     taskId,

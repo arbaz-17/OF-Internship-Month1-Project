@@ -69,9 +69,11 @@ export function removeTaskState(taskId) {
 }
 
 export function removeTasksByProjectId(projectId) {
-  tasks = tasks.filter(
-    (task) => task.project_id !== projectId
-  );
+
+  tasks = tasks.filter((task) => {
+    return task.project_id !== projectId;
+  });
+
 }
 
 // ==================== Selected Project ====================
@@ -139,6 +141,8 @@ export function clearProjectSearchQuery() {
 
 // ==================== Project Filters ====================
 
+// Status Filter
+
 export function getProjectStatusFilter() {
   return projectStatusFilter;
 }
@@ -149,4 +153,18 @@ export function setProjectStatusFilter(status) {
 
 export function clearProjectStatusFilter() {
   projectStatusFilter = "";
+}
+
+// Priority Filter
+
+export function getProjectPriorityFilter() {
+  return projectPriorityFilter;
+}
+
+export function setProjectPriorityFilter(priority) {
+  projectPriorityFilter = priority;
+}
+
+export function clearProjectPriorityFilter() {
+  projectPriorityFilter = "";
 }

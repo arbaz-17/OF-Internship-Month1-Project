@@ -1,18 +1,57 @@
-const BASE_URL = "https://6a71cc9ef687776c13f0aa20.mockapi.io/pms-api/";
+const BASE_URL =
+  "https://6a71cc9ef687776c13f0aa20.mockapi.io/pms-api";
+
+async function request(endpoint, options = {}) {
+  const response = await fetch(
+    `${BASE_URL}${endpoint}`,
+    options
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `HTTP Error: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return await response.json();
+}
 
 export const httpClient = {
-  async get(endpoint, options = {}) {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+  get(endpoint, options = {}) {
+    return request(endpoint, {
       method: "GET",
       ...options,
     });
+  },
 
-    if (!response.ok) {
-      throw new Error(
-        `HTTP Error: ${response.status} ${response.statusText}`
-      );
-    }
+  post(endpoint, data, options = {}) {
+    return request(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      body: JSON.stringify(data),
+      ...options,
+    });
+  },
 
-    return await response.json();
+  put(endpoint, data, options = {}) {
+    return request(endpoint, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      body: JSON.stringify(data),
+      ...options,
+    });
+  },
+
+  delete(endpoint, options = {}) {
+    return request(endpoint, {
+      method: "DELETE",
+      ...options,
+    });
   },
 };

@@ -1,10 +1,13 @@
 import { setProjects, setTasks } from "./state/appState.js";
+
 import {
   getFilteredProjects,
   getFirstProject,
   getProjectById,
 } from "./services/projectService.js";
+
 import { getTasksByProjectId } from "./services/taskService.js";
+
 import {
   getSelectedProjectId,
   getLoading,
@@ -13,20 +16,26 @@ import {
   setError,
   clearError,
 } from "./state/appState.js";
+
 import { renderProjects } from "./ui/projectRenderer.js";
 import { renderProjectDetails } from "./ui/layoutRenderer.js";
 import { renderTasks } from "./ui/taskRenderer.js";
 import { renderNoProjectsState } from "./ui/emptyStateRenderer.js";
 import { renderLoadingState } from "./ui/loadingStateRenderer.js";
 import { renderErrorState } from "./ui/errorStateRenderer.js";
+
 import { initializeProjectForm } from "./forms/projectForm.js";
 import { initializeTaskForm } from "./forms/taskForm.js";
 import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
 import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
+
 import { selectProject } from "./controllers/projectController.js";
+
 import eventBus from "./events/eventBus.js";
 import { EVENTS } from "./events/eventNames.js";
+
 import { storageService } from "./storage/storageService.js";
+
 import { projectApi } from "./api/projectApi.js";
 import { taskApi } from "./api/taskApi.js";
 
@@ -59,49 +68,87 @@ function renderApplication() {
   renderTasks(tasks);
 }
 
-async function loadInitialWorkspace() {
-  setLoading(true);
+function loadCachedWorkspace() {
+  const workspace = storageService.loadWorkspace();
+
+  if (!workspace) {
+    return false;
+  }
+
+  setProjects(workspace.projects);
+  setTasks(workspace.tasks);
+
+  return true;
+}
+
+async function fetchLatestWorkspace() {
+  const [projects, tasks] = await Promise.all([
+    projectApi.getProjects(),
+    taskApi.getTasks(),
+  ]);
+
+  setProjects(projects);
+  setTasks(tasks);
+
+  storageService.saveWorkspace({
+    projects,
+    tasks,
+  });
+}
+
+async function initializeWorkspace() {
   clearError();
 
-  try {
-    const workspace = storageService.loadWorkspace();
+  const hasCache = loadCachedWorkspace();
 
-    if (workspace) {
-      setProjects(workspace.projects);
-      setTasks(workspace.tasks);
+  if (hasCache) {
+    const firstProject = getFirstProject();
 
-      return;
+    if (firstProject) {
+      selectProject(firstProject.id);
     }
 
-    const [projects, tasks] = await Promise.all([
-      projectApi.getProjects(),
-      taskApi.getTasks(),
-    ]);
+    renderApplication();
+  } else {
+    setLoading(true);
+    renderApplication();
+  }
 
-    storageService.saveWorkspace({
-      projects,
-      tasks,
-    });
+  try {
+    await fetchLatestWorkspace();
 
-    setProjects(projects);
-    setTasks(tasks);
+    const firstProject = getFirstProject();
+
+    if (firstProject) {
+      selectProject(firstProject.id);
+    } else {
+      renderNoProjectsState();
+    }
   } catch (error) {
     console.error(error);
 
-    setError("Unable to load application data.");
+    if (!hasCache) {
+      setError("Unable to load application data.");
+
+      renderApplication();
+    }
   } finally {
     setLoading(false);
+
+    renderApplication();
   }
 }
 
 async function initializeApplication() {
-  await loadInitialWorkspace();
+  await initializeWorkspace();
 
   initializeProjectForm();
+
   initializeTaskForm();
+
   initializeProjectSearchForm();
-  initializeProjectSearchForm();
-initializeProjectFilterForm();
+
+  initializeProjectFilterForm();
 
   eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
 
@@ -116,15 +163,6 @@ initializeProjectFilterForm();
   eventBus.subscribe(EVENTS.TASK_UPDATED, renderApplication);
 
   eventBus.subscribe(EVENTS.TASK_DELETED, renderApplication);
-
-  const firstProject = getFirstProject();
-
-  if (!firstProject) {
-    renderNoProjectsState();
-    return;
-  }
-
-  selectProject(firstProject.id);
 }
 
 initializeApplication();

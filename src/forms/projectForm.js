@@ -37,6 +37,13 @@ export function populateProjectForm(projectId) {
   document.getElementById("project-description").value =
     project.description;
 
+    document.getElementById("project-status").value =
+  project.status;
+
+document.getElementById("project-priority").value =
+  project.priority;
+    
+
   setEditingProjectId(projectId);
 
   document.querySelector(
@@ -52,11 +59,11 @@ function handleEditProject(event) {
   if (!button) return;
 
   populateProjectForm(
-    Number(button.dataset.projectId)
+    button.dataset.projectId
   );
 }
 
-function handleDeleteProject(event) {
+async function handleDeleteProject(event) {
   const button = event.target.closest(
     "#delete-project-btn"
   );
@@ -69,36 +76,54 @@ function handleDeleteProject(event) {
 
   if (!confirmed) return;
 
-  deleteProject(
-    Number(button.dataset.projectId)
-  );
+  try {
+    await deleteProject(
+      button.dataset.projectId
+    );
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
 
-  const projectData = {
-    name: document.getElementById("project-name").value,
-    category: document.getElementById("project-category").value,
-    description: document.getElementById("project-description").value,
-  };
+const projectData = {
+  name: document.getElementById("project-name").value,
+  category: document.getElementById("project-category").value,
+  description: document.getElementById("project-description").value,
+  status: document.getElementById("project-status").value,
+  priority: document.getElementById("project-priority").value,
+};
 
-  const editingProjectId = getEditingProjectId();
+  const editingProjectId =
+    getEditingProjectId();
 
-  if (editingProjectId) {
-    updateProject(
-      editingProjectId,
-      projectData
-    );
+  try {
+    if (editingProjectId) {
+      await updateProject(
+        editingProjectId,
+        projectData
+      );
 
-    clearEditingProjectId();
+      clearEditingProjectId();
 
-    document.querySelector(
-      "#project-form button"
-    ).textContent = "Create Project";
-  } else {
-    createNewProject(projectData);
+      document.querySelector(
+        "#project-form button"
+      ).textContent = "Create Project";
+    } else {
+      await createNewProject(projectData);
+    }
+
+    event.target.reset();
+    document.getElementById("project-status").value =
+  "active";
+
+document.getElementById("project-priority").value =
+  "medium";
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
   }
-
-  event.target.reset();
 }

@@ -1,13 +1,29 @@
 import {
   getProjects,
+  getTasks,
   addProject,
   updateProjectState,
   removeProjectState,
   removeTasksByProjectId,
-    getProjectSearchQuery,
+  getProjectSearchQuery,
   getProjectStatusFilter,
   getProjectPriorityFilter,
 } from "../state/appState.js";
+
+import { storageService } from "../storage/storageService.js";
+import { projectApi } from "../api/projectApi.js";
+import { getTasksByProjectId } from "./taskService.js";
+import { taskApi } from "../api/taskApi.js";
+
+
+function persistCurrentState() {
+  storageService.saveWorkspace({
+    projects: getProjects(),
+    tasks: getTasks(),
+  });
+}
+
+// ==================== Queries ====================
 
 export function getAllProjects() {
   return getProjects();
@@ -18,50 +34,33 @@ export function getFirstProject() {
 }
 
 export function getProjectById(projectId) {
-  return getProjects().find(
-    (project) => project.id === projectId
-  );
+  return getProjects().find((project) => project.id === projectId);
 }
 
 export function projectExists(projectId) {
-  return getProjects().some(
-    (project) => project.id === projectId
-  );
+  return getProjects().some((project) => project.id === projectId);
 }
 
-export function createProject(projectData) {
+// ==================== CRUD ====================
+
+export async function createProject(projectData) {
   if (!projectData.name?.trim()) {
     throw new Error("Project name is required.");
   }
 
-  const projects = getProjects();
-
-  const nextProjectId =
-    projects.length === 0
-      ? 1
-      : Math.max(...projects.map((project) => project.id)) + 1;
-
-  const today = new Date().toISOString().split("T")[0];
-
-  const newProject = {
-    id: nextProjectId,
+  const createdProject = await projectApi.createProject({
+    ...projectData,
     name: projectData.name.trim(),
-    category: projectData.category ?? "",
-    description: projectData.description ?? "",
-    status: projectData.status ?? "active",
-    priority: projectData.priority ?? "medium",
-    start_date: projectData.start_date ?? today,
-    due_date: projectData.due_date ?? "",
-    created_at: today,
-    updated_at: today,
-  };
+  });
 
-  addProject(newProject);
+  addProject(createdProject);
 
-  return newProject;
+  persistCurrentState();
+
+  return createdProject;
 }
 
-export function updateExistingProject(projectId, projectData) {
+export async function updateExistingProject(projectId, projectData) {
   const existingProject = getProjectById(projectId);
 
   if (!existingProject) {
@@ -72,62 +71,63 @@ export function updateExistingProject(projectId, projectData) {
     throw new Error("Project name is required.");
   }
 
-  const updatedProject = {
+  const updatedProject = await projectApi.updateProject(projectId, {
     ...existingProject,
     ...projectData,
     name: projectData.name.trim(),
-    updated_at: new Date().toISOString().split("T")[0],
-  };
+  });
 
   updateProjectState(updatedProject);
+
+  persistCurrentState();
 
   return updatedProject;
 }
 
-export function deleteExistingProject(projectId) {
-  const project = getProjectById(projectId);
+export async function deleteExistingProject(projectId) {
+  const existingProject = getProjectById(projectId);
 
-  if (!project) {
+  if (!existingProject) {
     throw new Error("Project not found.");
   }
 
-  removeProjectState(projectId);
+  const projectTasks = getTasksByProjectId(projectId);
+
+  for (const task of projectTasks) {
+  console.log("Deleting", task.id);
+
+  await taskApi.deleteTask(task.id);
+}
+
+  await projectApi.deleteProject(projectId);
 
   removeTasksByProjectId(projectId);
 
-  return project;
+  removeProjectState(projectId);
+
+  persistCurrentState();
+
+  return existingProject;
 }
 
+// ==================== Search & Filters ====================
+
 export function getFilteredProjects() {
-  const searchQuery = getProjectSearchQuery()
-    .trim()
-    .toLowerCase();
+  const searchQuery = getProjectSearchQuery().trim().toLowerCase();
 
-  const statusFilter =
-    getProjectStatusFilter();
+  const statusFilter = getProjectStatusFilter();
 
-  const priorityFilter =
-    getProjectPriorityFilter();
+  const priorityFilter = getProjectPriorityFilter();
 
   return getAllProjects().filter((project) => {
     const matchesSearch =
-      !searchQuery ||
-      project.name
-        .toLowerCase()
-        .includes(searchQuery);
+      !searchQuery || project.name.toLowerCase().includes(searchQuery);
 
-    const matchesStatus =
-      !statusFilter ||
-      project.status === statusFilter;
+    const matchesStatus = !statusFilter || project.status === statusFilter;
 
     const matchesPriority =
-      !priorityFilter ||
-      project.priority === priorityFilter;
+      !priorityFilter || project.priority === priorityFilter;
 
-    return (
-      matchesSearch &&
-      matchesStatus &&
-      matchesPriority
-    );
+    return matchesSearch && matchesStatus && matchesPriority;
   });
 }
