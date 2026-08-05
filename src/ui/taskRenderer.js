@@ -1,10 +1,24 @@
+import { getSelectedProjectId } from "../state/appState.js";
+
 export function renderTasks(tasks) {
-  const container = document.getElementById("task-list");
+  const selectedProjectId = getSelectedProjectId();
+
+  if (!selectedProjectId) return;
+
+  const container = document.getElementById(
+    `tasks-${selectedProjectId}`
+  );
+
+  if (!container) return;
 
   container.innerHTML = "";
 
   if (tasks.length === 0) {
-    container.innerHTML = "<p>No tasks found.</p>";
+    container.innerHTML = `
+      <div class="empty-tasks">
+        <p>No tasks yet.</p>
+      </div>
+    `;
     return;
   }
 
@@ -14,67 +28,79 @@ export function renderTasks(tasks) {
     card.className = "task-card";
 
     card.innerHTML = `
-      <h3>${task.title}</h3>
+      <div class="task-header">
+        <h3>${task.title}</h3>
 
-      <p>${task.description}</p>
+        <div class="task-actions">
+          <button
+            class="edit-task"
+            data-task-id="${task.id}">
+            Edit
+          </button>
 
-      <label>Status</label>
+          <button
+            class="delete-task"
+            data-task-id="${task.id}">
+            Delete
+          </button>
+        </div>
+      </div>
 
-      <select
-        class="task-status"
-        data-task-id="${task.id}">
+      <p class="task-description">
+        ${task.description || ""}
+      </p>
 
-        <option value="todo"
-          ${task.status === "todo" ? "selected" : ""}>
-          Todo
-        </option>
+      <div class="task-footer">
 
-        <option value="in-progress"
-          ${task.status === "in-progress" ? "selected" : ""}>
-          In Progress
-        </option>
+        <select
+          class="task-status"
+          data-task-id="${task.id}">
 
-        <option value="done"
-          ${task.status === "done" ? "selected" : ""}>
-          Done
-        </option>
+          <option
+            value="todo"
+            ${task.status === "todo" ? "selected" : ""}>
+            Todo
+          </option>
 
-      </select>
+          <option
+            value="in-progress"
+            ${task.status === "in-progress" ? "selected" : ""}>
+            In Progress
+          </option>
 
-      <label>Priority</label>
+          <option
+            value="done"
+            ${task.status === "done" ? "selected" : ""}>
+            Done
+          </option>
 
-      <select
-        class="task-priority"
-        data-task-id="${task.id}">
+        </select>
 
-        <option value="low"
-          ${task.priority === "low" ? "selected" : ""}>
-          Low
-        </option>
+        <select
+          class="task-priority"
+          data-task-id="${task.id}">
 
-        <option value="medium"
-          ${task.priority === "medium" ? "selected" : ""}>
-          Medium
-        </option>
+          <option
+            value="low"
+            ${task.priority === "low" ? "selected" : ""}>
+            Low
+          </option>
 
-        <option value="high"
-          ${task.priority === "high" ? "selected" : ""}>
-          High
-        </option>
+          <option
+            value="medium"
+            ${task.priority === "medium" ? "selected" : ""}>
+            Medium
+          </option>
 
-      </select>
+          <option
+            value="high"
+            ${task.priority === "high" ? "selected" : ""}>
+            High
+          </option>
 
-      <button
-        class="edit-task"
-        data-task-id="${task.id}">
-        Edit
-      </button>
+        </select>
 
-      <button
-        class="delete-task"
-        data-task-id="${task.id}">
-        Delete
-      </button>
+      </div>
     `;
 
     container.appendChild(card);
