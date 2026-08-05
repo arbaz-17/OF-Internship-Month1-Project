@@ -1,172 +1,151 @@
-<body>
+<!doctype html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-  <header class="app-header">
-    <div class="header-content">
-      <h1 class="app-title">Project Management System</h1>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Management System</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">Project Management System</h1>
 
-      <div class="header-actions">
-        <div class="search-wrapper">
-          <input
-            type="search"
-            id="project-search"
-            placeholder="Search projects..."
-          />
+        <div class="header-actions">
+          <div class="search-wrapper">
+            <input
+              type="search"
+              id="project-search"
+              placeholder="Search projects..."
+            />
+            <button
+              type="button"
+              id="clear-project-search"
+              aria-label="Clear search"
+            >
+              ✕
+            </button>
+          </div>
 
-          <button
-            type="button"
-            id="clear-project-search"
-            aria-label="Clear search">
-            ✕
+          <button type="button" id="open-project-modal" class="primary-btn">
+            + Add Project
           </button>
         </div>
-
-        <button
-          type="button"
-          id="open-project-modal"
-          class="primary-btn">
-          + Add Project
-        </button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <section class="filters-bar">
-    <div class="filters">
-
-      <select id="project-status-filter">
-        <option value="">All Statuses</option>
-        <option value="active">Active</option>
-        <option value="completed">Completed</option>
-        <option value="on-hold">On Hold</option>
-      </select>
-
-      <select id="project-priority-filter">
-        <option value="">All Priorities</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-
-      <button
-        type="button"
-        id="reset-project-filters">
-        Reset Filters
-      </button>
-
-    </div>
-  </section>
-
-  <main class="workspace">
-
-    <section
-      id="project-list"
-      class="project-list">
-    </section>
-
-  </main>
-
-  <section
-    class="modal project-modal"
-    id="project-modal">
-
-    <div class="modal-content">
-
-      <h2>Project</h2>
-
-      <form id="project-form">
-
-        <input
-          type="text"
-          id="project-name"
-          placeholder="Project Name"
-          required
-        />
-
-        <input
-          type="text"
-          id="project-category"
-          placeholder="Category"
-        />
-
-        <textarea
-          id="project-description"
-          placeholder="Description">
-        </textarea>
-
-        <select id="project-status">
+    <section class="filters-bar">
+      <div class="filters">
+        <select id="project-status-filter">
+          <option value="">All Statuses</option>
           <option value="active">Active</option>
           <option value="completed">Completed</option>
           <option value="on-hold">On Hold</option>
         </select>
 
-        <select id="project-priority">
-          <option value="low">Low</option>
-          <option value="medium" selected>Medium</option>
-          <option value="high">High</option>
-        </select>
-
-        <button type="submit">
-          Create Project
-        </button>
-
-      </form>
-
-    </div>
-
-  </section>
-
-
-  <section
-    class="modal task-modal"
-    id="task-modal">
-
-    <div class="modal-content">
-
-      <h2>Task</h2>
-
-      <form id="task-form">
-
-        <input
-          id="task-title"
-          placeholder="Task Title"
-          required
-        />
-
-        <textarea
-          id="task-description"
-          placeholder="Description">
-        </textarea>
-
-        <select id="task-priority">
+        <select id="project-priority-filter">
+          <option value="">All Priorities</option>
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
 
-        <select id="task-status">
-          <option value="todo">Todo</option>
-          <option value="in-progress">In Progress</option>
-          <option value="done">Done</option>
-        </select>
+        <button type="button" id="reset-project-filters">Reset Filters</button>
+      </div>
+    </section>
 
-        <button type="submit">
-          Create Task
-        </button>
+    <main class="workspace">
+      <section id="project-list" class="project-list"></section>
+    </main>
 
-      </form>
+    <section class="modal project-modal" id="project-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Project</h2>
+          <button type="button" id="close-project-modal" class="modal-close">
+            ✕
+          </button>
+        </div>
 
-    </div>
+        <form id="project-form">
+          <input
+            type="text"
+            id="project-name"
+            placeholder="Project Name"
+            required
+          />
 
-  </section>
+          <input type="text" id="project-category" placeholder="Category" />
 
-  <div id="project-details" hidden></div>
+          <textarea id="project-description" placeholder="Description">
+          </textarea>
 
-  <div id="task-list" hidden></div>
+          <select id="project-status">
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="on-hold">On Hold</option>
+          </select>
 
-  <script
-    type="module"
-    src="./src/main.js">
-  </script>
-</body>
+          <select id="project-priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <button type="submit">Create Project</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="modal task-modal" id="task-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Task</h2>
+          <button type="button" id="close-task-modal" class="modal-close">
+            ✕
+          </button>
+        </div>
+
+        <form id="task-form">
+          <input
+            type="text"
+            id="task-title"
+            placeholder="Task Title"
+            required
+          />
+
+          <textarea id="task-description" placeholder="Description"> </textarea>
+
+          <select id="task-priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <select id="task-status">
+            <option value="todo">Todo</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+
+          <div class="form-actions">
+    <button
+        type="button"
+        id="cancel-task-modal"
+        class="secondary-btn">
+        Cancel
+    </button>
+
+    <button
+        type="submit"
+        class="primary-btn">
+        Create Task
+    </button>
+</div>
+        </form>
+      </div>
+    </section>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

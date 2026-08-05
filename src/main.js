@@ -18,7 +18,6 @@ import {
 } from "./state/appState.js";
 
 import { renderProjects } from "./ui/projectRenderer.js";
-import { renderProjectDetails } from "./ui/layoutRenderer.js";
 import { renderTasks } from "./ui/taskRenderer.js";
 import { renderNoProjectsState } from "./ui/emptyStateRenderer.js";
 import { renderLoadingState } from "./ui/loadingStateRenderer.js";
@@ -28,6 +27,7 @@ import { initializeProjectForm } from "./forms/projectForm.js";
 import { initializeTaskForm } from "./forms/taskForm.js";
 import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
 import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
+import { initializeModal,bindModalButtons } from "./ui/modal.js";
 
 import { selectProject } from "./controllers/projectController.js";
 
@@ -59,13 +59,15 @@ function renderApplication() {
     return;
   }
 
-  const tasks = getTasksByProjectId(selectedProject.id);
+const tasks = getTasksByProjectId(selectedProject.id);
 
-  renderProjects(projects, selectedProject.id, selectProject);
+renderProjects(
+  projects,
+  selectedProject.id,
+  selectProject
+);
 
-  renderProjectDetails(selectedProject);
-
-  renderTasks(tasks);
+renderTasks(tasks);
 }
 
 function loadCachedWorkspace() {
@@ -149,6 +151,10 @@ async function initializeApplication() {
   initializeProjectSearchForm();
 
   initializeProjectFilterForm();
+initializeModal("project-modal");
+initializeModal("task-modal");
+
+bindModalButtons();
 
   eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
 

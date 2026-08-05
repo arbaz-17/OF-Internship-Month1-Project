@@ -13,6 +13,9 @@ import {
 import {
   getProjectById,
 } from "../services/projectService.js";
+import { openModal } from "../ui/modal.js";
+
+import { closeModal } from "../ui/modal.js";
 
 export function initializeProjectForm() {
   const form = document.getElementById("project-form");
@@ -45,6 +48,7 @@ document.getElementById("project-priority").value =
     
 
   setEditingProjectId(projectId);
+  openModal("project-modal");
 
   document.querySelector(
     "#project-form button"
@@ -117,6 +121,7 @@ const projectData = {
     }
 
     event.target.reset();
+    closeModal("project-modal");
     document.getElementById("project-status").value =
   "active";
 

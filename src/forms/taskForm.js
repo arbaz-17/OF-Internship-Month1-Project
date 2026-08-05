@@ -12,6 +12,9 @@ import {
   getTaskById,
 } from "../services/taskService.js";
 
+import { closeModal } from "../ui/modal.js";
+import { openModal } from "../ui/modal.js";
+
 let editingTaskId = null;
 
 export function initializeTaskForm() {
@@ -49,6 +52,7 @@ async function handleSubmit(event) {
     }
 
     formReset();
+    closeModal("task-modal");
   } catch (error) {
     console.error(error);
     alert(error.message);
@@ -135,6 +139,7 @@ function populateTaskForm(taskId) {
   if (!task) return;
 
   editingTaskId = taskId;
+  openModal("task-modal");
 
   document.getElementById("task-title").value =
     task.title;
@@ -154,6 +159,8 @@ function populateTaskForm(taskId) {
 }
 
 function formReset() {
+  editingTaskId = null;
+
   document.getElementById("task-form").reset();
 
   document.querySelector(

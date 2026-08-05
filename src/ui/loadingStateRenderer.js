@@ -1,18 +1,11 @@
 export function renderLoadingState() {
-  const projectDetailsContainer = document.getElementById(
-    "project-details"
-  );
+  const container = document.getElementById("project-list");
 
-  const taskListContainer = document.getElementById(
-    "task-list"
-  );
+  container.innerHTML = `
+    <section class="loading-state">
+      <h2>Loading workspace...</h2>
 
-  projectDetailsContainer.innerHTML = `
-    <div class="loading-state">
-      <h2>Loading...</h2>
-      <p>Please wait while the application loads your workspace.</p>
-    </div>
+      <p>Please wait while we fetch your projects.</p>
+    </section>
   `;
-
-  taskListContainer.innerHTML = "";
 }

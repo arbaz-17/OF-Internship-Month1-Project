@@ -23,88 +23,119 @@ export function renderProjects(projects, selectedProjectId, onProjectSelect) {
     }
 
     card.innerHTML = `
-      <div class="project-card-header">
-        <div>
-          <h2 class="project-title">${project.name}</h2>
-          <p class="project-category">${project.category || "Uncategorized"}</p>
+    <div
+        class="project-card-header"
+        data-project-id="${project.id}">
+
+        <div class="project-heading">
+
+            <span class="expand-icon">
+                ▼
+            </span>
+
+            <div>
+
+                <h2 class="project-title">
+                    ${project.name}
+                </h2>
+
+                <p class="project-category">
+                    ${project.category || "Uncategorized"}
+                </p>
+
+            </div>
+
         </div>
 
         <div class="project-badges">
-          <span class="badge badge-status">
-            ${project.status}
-          </span>
 
-          <span class="badge badge-priority">
-            ${project.priority}
-          </span>
-        </div>
-      </div>
+            <span class="badge badge-status">
+                ${project.status}
+            </span>
 
-      <div class="project-card-body">
-        <p class="project-description">
-          ${project.description || "No description provided."}
-        </p>
-      </div>
+            <span class="badge badge-priority">
+                ${project.priority}
+            </span>
 
-      <div class="project-card-meta">
-        <span>
-          Created:
-          ${
-            project.created_at
-              ? new Date(project.created_at).toLocaleDateString()
-              : "N/A"
-          }
-        </span>
-
-        <span>
-          Updated:
-          ${
-            project.updated_at
-              ? new Date(project.updated_at).toLocaleDateString()
-              : "N/A"
-          }
-        </span>
-      </div>
-
-      <div class="project-card-actions">
-        <div class="project-actions-left">
-          <button
-            type="button"
-            class="show-tasks-btn"
-            data-project-id="${project.id}">
-            Show Tasks
-          </button>
-
-          <button
-            type="button"
-            class="add-task-btn"
-            data-project-id="${project.id}">
-            + Add Task
-          </button>
         </div>
 
-        <div class="project-actions-right">
-          <button
-            type="button"
-            id="edit-project-btn"
-            data-project-id="${project.id}">
-            Edit
-          </button>
+    </div>
 
-          <button
-            type="button"
-            id="delete-project-btn"
-            data-project-id="${project.id}">
-            Delete
-          </button>
+    <div class="project-content">
+
+        <div class="project-card-body">
+
+            <p class="project-description">
+                ${
+                    project.description ||
+                    "No description provided."
+                }
+            </p>
+
         </div>
-      </div>
 
-<div
-    class="project-tasks-container"
-    id="tasks-${project.id}">
-</div>
-    `;
+        <div class="project-card-meta">
+
+            <span>
+                Created:
+                ${
+                    project.created_at
+                        ? new Date(project.created_at).toLocaleDateString()
+                        : "N/A"
+                }
+            </span>
+
+            <span>
+                Updated:
+                ${
+                    project.updated_at
+                        ? new Date(project.updated_at).toLocaleDateString()
+                        : "N/A"
+                }
+            </span>
+
+        </div>
+
+        <div class="project-card-actions">
+
+            <div class="project-actions-left">
+
+                <button
+                    type="button"
+                    class="add-task-btn"
+                    data-project-id="${project.id}">
+                    + Add Task
+                </button>
+
+            </div>
+
+            <div class="project-actions-right">
+
+                <button
+                    type="button"
+                    id="edit-project-btn"
+                    data-project-id="${project.id}">
+                    Edit
+                </button>
+
+                <button
+                    type="button"
+                    id="delete-project-btn"
+                    data-project-id="${project.id}">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        <div
+            class="project-tasks-container"
+            id="tasks-${project.id}">
+        </div>
+
+    </div>
+`;
 
     card.addEventListener("click", (event) => {
       if (event.target.closest("button")) return;
