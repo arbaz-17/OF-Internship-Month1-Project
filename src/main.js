@@ -2,7 +2,6 @@ import { setProjects, setTasks } from "./state/appState.js";
 
 import {
   getFilteredProjects,
-  getFirstProject,
   getProjectById,
 } from "./services/projectService.js";
 
@@ -27,7 +26,10 @@ import { initializeProjectForm } from "./forms/projectForm.js";
 import { initializeTaskForm } from "./forms/taskForm.js";
 import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
 import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
-import { initializeModal,bindModalButtons } from "./ui/modal.js";
+import {
+  initializeModal,
+  bindModalButtons,
+} from "./ui/modal.js";
 import { initializeConfirmModal } from "./ui/confirmModal.js";
 
 import { selectProject } from "./controllers/projectController.js";
@@ -53,22 +55,30 @@ function renderApplication() {
 
   const projects = getFilteredProjects();
 
-  const selectedProject = getProjectById(getSelectedProjectId());
-
-  if (!selectedProject) {
+  // Show empty state only when there are no projects.
+  if (projects.length === 0) {
     renderNoProjectsState();
     return;
   }
 
-const tasks = getTasksByProjectId(selectedProject.id);
+  const selectedProject = getProjectById(
+    getSelectedProjectId()
+  );
 
-renderProjects(
-  projects,
-  selectedProject.id,
-  selectProject
-);
+  renderProjects(
+    projects,
+    selectedProject?.id ?? null,
+    selectProject
+  );
 
-renderTasks(tasks);
+  // Render tasks only if a project is expanded.
+  if (selectedProject) {
+    const tasks = getTasksByProjectId(
+      selectedProject.id
+    );
+
+    renderTasks(tasks);
+  }
 }
 
 function loadCachedWorkspace() {
@@ -105,12 +115,6 @@ async function initializeWorkspace() {
   const hasCache = loadCachedWorkspace();
 
   if (hasCache) {
-    const firstProject = getFirstProject();
-
-    if (firstProject) {
-      selectProject(firstProject.id);
-    }
-
     renderApplication();
   } else {
     setLoading(true);
@@ -120,24 +124,16 @@ async function initializeWorkspace() {
   try {
     await fetchLatestWorkspace();
 
-    const firstProject = getFirstProject();
-
-    if (firstProject) {
-      selectProject(firstProject.id);
-    } else {
-      renderNoProjectsState();
-    }
+    // Intentionally do not auto-select any project.
   } catch (error) {
     console.error(error);
 
     if (!hasCache) {
       setError("Unable to load application data.");
-
       renderApplication();
     }
   } finally {
     setLoading(false);
-
     renderApplication();
   }
 }
@@ -152,26 +148,48 @@ async function initializeApplication() {
   initializeProjectSearchForm();
 
   initializeProjectFilterForm();
-initializeModal("project-modal");
-initializeModal("task-modal");
 
-bindModalButtons();
+  initializeModal("project-modal");
+  initializeModal("task-modal");
 
-initializeConfirmModal();
+  bindModalButtons();
 
-  eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
+  initializeConfirmModal();
 
-  eventBus.subscribe(EVENTS.PROJECT_UPDATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_SELECTED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.PROJECT_DELETED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_UPDATED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.PROJECT_CREATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_DELETED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.TASK_CREATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_CREATED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.TASK_UPDATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.TASK_CREATED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.TASK_DELETED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.TASK_UPDATED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.TASK_DELETED,
+    renderApplication
+  );
 }
 
 initializeApplication();

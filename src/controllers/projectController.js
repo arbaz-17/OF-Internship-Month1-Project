@@ -1,5 +1,6 @@
 import {
   setSelectedProjectId,
+  getSelectedProjectId,
 } from "../state/appState.js";
 
 import eventBus from "../events/eventBus.js";
@@ -13,13 +14,16 @@ import {
 } from "../services/projectService.js";
 
 export function selectProject(projectId) {
-  setSelectedProjectId(projectId);
+  const currentSelectedProjectId = getSelectedProjectId();
 
-  eventBus.emit(EVENTS.PROJECT_SELECTED, {
-    projectId,
-  });
+  if (currentSelectedProjectId === projectId) {
+    setSelectedProjectId(null);
+  } else {
+    setSelectedProjectId(projectId);
+  }
+
+  eventBus.emit(EVENTS.PROJECT_SELECTED);
 }
-
 export async function createNewProject(projectData) {
   const project = await createProject(projectData);
 
