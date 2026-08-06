@@ -1,0 +1,97 @@
+/* ==========================
+   Layout 
+========================== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-background); /* Updated to match dark theme */
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.app-title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.search-wrapper {
+  position: relative;
+  max-width: 240px;
+  width: 100%;
+}
+
+#project-search {
+  padding-right: 24px;
+}
+
+#clear-project-search {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.filters-bar {
+  max-width: 1000px;
+  margin: 1.5rem auto 0.5rem;
+  padding: 0 32px;
+}
+
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center; /* Kept centered from previous request */
+}
+
+.filters select {
+  width: auto;
+  min-width: 120px;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+}
+
+.workspace {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 32px 4rem;
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .search-wrapper {
+    max-width: 100%;
+  }
+  .header-content, .filters-bar, .workspace {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

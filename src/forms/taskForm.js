@@ -14,6 +14,12 @@ import {
 
 import { closeModal } from "../ui/modal.js";
 import { openModal } from "../ui/modal.js";
+import { showConfirmation } from "../ui/confirmModal.js";
+
+import {
+  setButtonLoading,
+  resetButton,
+} from "../ui/buttonLoading.js";
 
 let editingTaskId = null;
 
@@ -30,6 +36,9 @@ export function initializeTaskForm() {
 
 async function handleSubmit(event) {
   event.preventDefault();
+  const submitButton = document.getElementById(
+  "task-submit-btn"
+);
 
   const taskData = {
     project_id: getSelectedProjectId(),
@@ -39,7 +48,14 @@ async function handleSubmit(event) {
     status: document.getElementById("task-status").value,
   };
 
-  try {
+setButtonLoading(
+  submitButton,
+  editingTaskId
+    ? "Updating..."
+    : "Creating..."
+);
+
+try {
     if (editingTaskId) {
       await updateTask(
         editingTaskId,
@@ -57,6 +73,11 @@ async function handleSubmit(event) {
     console.error(error);
     alert(error.message);
   }
+  finally {
+
+    resetButton(submitButton);
+
+}
 }
 
 async function handleTaskActions(event) {
@@ -70,27 +91,31 @@ async function handleTaskActions(event) {
     return;
   }
 
-  const deleteButton =
-    event.target.closest(".delete-task");
+const deleteButton =
+  event.target.closest(".delete-task");
 
-  if (deleteButton) {
-    const confirmed = confirm(
-      "Delete this task?"
-    );
+if (deleteButton) {
+  const taskId = deleteButton.dataset.taskId;
 
-    if (!confirmed) return;
+  const task = getTaskById(taskId);
 
-    try {
-      await deleteTask(
-        deleteButton.dataset.taskId
-      );
-    } catch (error) {
-      console.error(error);
-      alert(error.message);
-    }
+  showConfirmation({
+    title: "Delete Task",
+    message: `Are you sure you want to delete "${task.title}"?\n\nThis action cannot be undone.`,
+    confirmText: "Delete Task",
 
-    return;
-  }
+    onConfirm: async () => {
+      try {
+        await deleteTask(taskId);
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    },
+  });
+
+  return;
+}
 
   const statusSelect =
     event.target.closest(".task-status");
@@ -153,9 +178,9 @@ function populateTaskForm(taskId) {
   document.getElementById("task-status").value =
     task.status;
 
-  document.querySelector(
-    "#task-form button"
-  ).textContent = "Update Task";
+document.getElementById(
+  "task-submit-btn"
+).textContent = "Save Changes";
 }
 
 function formReset() {
@@ -163,7 +188,7 @@ function formReset() {
 
   document.getElementById("task-form").reset();
 
-  document.querySelector(
-    "#task-form button"
-  ).textContent = "Create Task";
+document.getElementById(
+  "task-submit-btn"
+).textContent = "Create Task";
 }

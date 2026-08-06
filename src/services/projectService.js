@@ -94,8 +94,6 @@ export async function deleteExistingProject(projectId) {
   const projectTasks = getTasksByProjectId(projectId);
 
   for (const task of projectTasks) {
-  console.log("Deleting", task.id);
-
   await taskApi.deleteTask(task.id);
 }
 

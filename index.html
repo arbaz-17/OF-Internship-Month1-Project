@@ -4,12 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Management System</title>
-    <link rel="stylesheet" href="/css/styles.css" />
+
+    <!-- Split CSS Files -->
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/projects.css" />
+    <link rel="stylesheet" href="/css/tasks.css" />
+    <link rel="stylesheet" href="/css/modals.css" />
   </head>
+
   <body>
+    <!-- Header -->
     <header class="app-header">
       <div class="header-content">
-        <h1 class="app-title">Project Management System</h1>
+        <h1 class="app-title">OptimusFox - PMS</h1>
 
         <div class="header-actions">
           <div class="search-wrapper">
@@ -18,6 +27,7 @@
               id="project-search"
               placeholder="Search projects..."
             />
+
             <button
               type="button"
               id="clear-project-search"
@@ -28,12 +38,13 @@
           </div>
 
           <button type="button" id="open-project-modal" class="primary-btn">
-            + Add Project
+            Add Project
           </button>
         </div>
       </div>
     </header>
 
+    <!-- Filters -->
     <section class="filters-bar">
       <div class="filters">
         <select id="project-status-filter">
@@ -50,18 +61,23 @@
           <option value="high">High</option>
         </select>
 
-        <button type="button" id="reset-project-filters">Reset Filters</button>
+        <button type="button" id="reset-project-filters" class="secondary-btn">
+          Reset Filters
+        </button>
       </div>
     </section>
 
+    <!-- Workspace -->
     <main class="workspace">
       <section id="project-list" class="project-list"></section>
     </main>
 
+    <!-- Project Modal -->
     <section class="modal project-modal" id="project-modal">
       <div class="modal-content">
         <div class="modal-header">
           <h2>Project</h2>
+
           <button type="button" id="close-project-modal" class="modal-close">
             ✕
           </button>
@@ -77,8 +93,10 @@
 
           <input type="text" id="project-category" placeholder="Category" />
 
-          <textarea id="project-description" placeholder="Description">
-          </textarea>
+          <textarea
+            id="project-description"
+            placeholder="Description"
+          ></textarea>
 
           <select id="project-status">
             <option value="active">Active</option>
@@ -92,15 +110,22 @@
             <option value="high">High</option>
           </select>
 
-          <button type="submit">Create Project</button>
+          <button
+  id="project-submit-btn"
+  type="submit"
+  class="primary-btn">
+  Create Project
+</button>
         </form>
       </div>
     </section>
 
+    <!-- Task Modal -->
     <section class="modal task-modal" id="task-modal">
       <div class="modal-content">
         <div class="modal-header">
           <h2>Task</h2>
+
           <button type="button" id="close-task-modal" class="modal-close">
             ✕
           </button>
@@ -114,7 +139,7 @@
             required
           />
 
-          <textarea id="task-description" placeholder="Description"> </textarea>
+          <textarea id="task-description" placeholder="Description"></textarea>
 
           <select id="task-priority">
             <option value="low">Low</option>
@@ -129,23 +154,44 @@
           </select>
 
           <div class="form-actions">
-    <button
-        type="button"
-        id="cancel-task-modal"
-        class="secondary-btn">
-        Cancel
-    </button>
+            <button type="button" id="cancel-task-modal" class="secondary-btn">
+              Cancel
+            </button>
 
-    <button
-        type="submit"
-        class="primary-btn">
-        Create Task
-    </button>
-</div>
+            <button
+    id="task-submit-btn"
+    type="submit"
+    class="primary-btn">
+    Create Task
+</button>
+          </div>
         </form>
       </div>
     </section>
 
+    <section id="confirm-modal" class="modal">
+      <div class="modal-content confirm-modal-content">
+        <div class="modal-header">
+          <h2 id="confirm-title">Delete</h2>
+
+          <button type="button" id="close-confirm-modal" class="modal-close">
+            ✕
+          </button>
+        </div>
+
+        <p id="confirm-message">Are you sure?</p>
+
+        <div class="form-actions">
+          <button type="button" id="cancel-confirm" class="secondary-btn">
+            Cancel
+          </button>
+
+          <button type="button" id="confirm-action" class="danger-btn">
+            Delete
+          </button>
+        </div>
+      </div>
+    </section>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>

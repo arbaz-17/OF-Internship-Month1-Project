@@ -1,4 +1,5 @@
 import { selectProject } from "../controllers/projectController.js";
+import { resetProjectForm } from "../forms/projectForm.js";
 
 export function openModal(modalId) {
   const modal = document.getElementById(modalId);
@@ -36,9 +37,11 @@ export function bindModalButtons() {
   const projectOpen = document.getElementById("open-project-modal");
   const projectClose = document.getElementById("close-project-modal");
 
-  projectOpen?.addEventListener("click", () => {
-    openModal("project-modal");
-  });
+projectOpen?.addEventListener("click", () => {
+  resetProjectForm();
+
+  openModal("project-modal");
+});
 
   projectClose?.addEventListener("click", () => {
     closeModal("project-modal");

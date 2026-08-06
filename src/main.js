@@ -28,6 +28,7 @@ import { initializeTaskForm } from "./forms/taskForm.js";
 import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
 import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
 import { initializeModal,bindModalButtons } from "./ui/modal.js";
+import { initializeConfirmModal } from "./ui/confirmModal.js";
 
 import { selectProject } from "./controllers/projectController.js";
 
@@ -155,6 +156,8 @@ initializeModal("project-modal");
 initializeModal("task-modal");
 
 bindModalButtons();
+
+initializeConfirmModal();
 
   eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
 
