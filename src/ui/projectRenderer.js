@@ -18,17 +18,23 @@ export function renderProjects(projects, selectedProjectId, onProjectSelect) {
 
   if (count) {
     count.textContent = projects.length;
+
+    count.setAttribute(
+      "aria-label",
+      `${projects.length} visible ${
+        projects.length === 1 ? "project" : "projects"
+      }`,
+    );
   }
 
   if (projects.length === 0) {
     container.innerHTML = `
-      <div class="empty-projects-sidebar">
-
-        <p>
-          No projects found.
-        </p>
-
-      </div>
+      <p
+        class="empty-projects-sidebar"
+        role="status"
+      >
+        No projects found.
+      </p>
     `;
 
     return;
@@ -43,10 +49,16 @@ export function renderProjects(projects, selectedProjectId, onProjectSelect) {
 
     item.dataset.projectId = project.id;
 
-    if (project.id === selectedProjectId) {
+    const isSelected = project.id === selectedProjectId;
+
+    if (isSelected) {
       item.classList.add("active");
 
       item.setAttribute("aria-current", "page");
+
+      item.setAttribute("aria-label", `${project.name}, selected project`);
+    } else {
+      item.setAttribute("aria-label", `Open project ${project.name}`);
     }
 
     item.innerHTML = `

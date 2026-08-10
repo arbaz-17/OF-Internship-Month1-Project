@@ -3,7 +3,6 @@ import {
   getTaskPriorityFilter,
 } from "../state/appState.js";
 
-
 function formatDate(date) {
   if (!date) return "N/A";
 
@@ -25,11 +24,7 @@ function formatLabel(value) {
 
   return String(value)
     .split("-")
-    .map(
-      (part) =>
-        part.charAt(0).toUpperCase() +
-        part.slice(1)
-    )
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
 }
 
@@ -43,8 +38,7 @@ function escapeHtml(value) {
 }
 
 export function renderProjectDetails(project) {
-  const container =
-    document.getElementById("dashboard-main");
+  const container = document.getElementById("dashboard-main");
 
   if (!container) return;
 
@@ -54,8 +48,10 @@ export function renderProjectDetails(project) {
 
   if (!project) {
     container.innerHTML = `
-      <section class="dashboard-empty-state">
-
+      <section
+        class="dashboard-empty-state"
+        aria-labelledby="dashboard-empty-title"
+      >
         <div
           class="dashboard-empty-icon"
           aria-hidden="true"
@@ -67,15 +63,14 @@ export function renderProjectDetails(project) {
           Project Workspace
         </p>
 
-        <h2>
+        <h2 id="dashboard-empty-title">
           Select a project
         </h2>
 
         <p>
-          Choose a project from the sidebar to view
-          its details and tasks.
+          Choose a project from the sidebar to
+          view its details and tasks.
         </p>
-
       </section>
     `;
 
@@ -88,36 +83,37 @@ export function renderProjectDetails(project) {
 
   const priority = project.priority || "medium";
 
-const taskStatusFilter = getTaskStatusFilter();
-const taskPriorityFilter = getTaskPriorityFilter();
+  const taskStatusFilter = getTaskStatusFilter();
 
-container.innerHTML = `
-    <section class="project-overview">
+  const taskPriorityFilter = getTaskPriorityFilter();
 
-      <div class="project-overview-header">
+  container.innerHTML = `
+    <section
+      class="project-overview"
+      aria-labelledby="project-title"
+    >
+      <header class="project-overview-header">
 
         <div class="project-overview-heading">
 
           <p class="project-overview-category">
-            ${escapeHtml(
-              formatLabel(project.category)
-            )}
+            ${escapeHtml(formatLabel(project.category))}
           </p>
 
-          <h2>
+          <h2 id="project-title">
             ${escapeHtml(project.name)}
           </h2>
 
           <p class="project-overview-description">
-            ${escapeHtml(
-              project.description ||
-                "No description provided."
-            )}
+            ${escapeHtml(project.description || "No description provided.")}
           </p>
 
         </div>
 
-        <div class="project-overview-actions">
+        <div
+          class="project-overview-actions"
+          aria-label="Project actions"
+        >
 
           <button
             type="button"
@@ -137,14 +133,15 @@ container.innerHTML = `
 
         </div>
 
-      </div>
+      </header>
 
-      <div class="project-overview-badges">
+      <div
+        class="project-overview-badges"
+        aria-label="Project status"
+      >
 
         <span class="badge badge-status">
-          ${escapeHtml(
-            formatLabel(project.status)
-          )}
+          ${escapeHtml(formatLabel(project.status))}
         </span>
 
         <span
@@ -154,71 +151,71 @@ container.innerHTML = `
             priority-${escapeHtml(priority)}
           "
         >
-          ${escapeHtml(
-            formatLabel(priority)
-          )}
+          ${escapeHtml(formatLabel(priority))}
           Priority
         </span>
 
       </div>
 
-      <div class="project-details-grid">
+      <dl class="project-details-grid">
 
         <div class="project-detail-item">
 
-          <span class="meta-label">
+          <dt class="meta-label">
             Start Date
-          </span>
+          </dt>
 
-          <strong>
+          <dd>
             ${formatDate(project.start_date)}
-          </strong>
+          </dd>
 
         </div>
 
         <div class="project-detail-item">
 
-          <span class="meta-label">
+          <dt class="meta-label">
             Due Date
-          </span>
+          </dt>
 
-          <strong>
+          <dd>
             ${formatDate(project.due_date)}
-          </strong>
+          </dd>
 
         </div>
 
         <div class="project-detail-item">
 
-          <span class="meta-label">
+          <dt class="meta-label">
             Created
-          </span>
+          </dt>
 
-          <strong>
+          <dd>
             ${formatDate(project.created_at)}
-          </strong>
+          </dd>
 
         </div>
 
         <div class="project-detail-item">
 
-          <span class="meta-label">
+          <dt class="meta-label">
             Last Updated
-          </span>
+          </dt>
 
-          <strong>
+          <dd>
             ${formatDate(project.updated_at)}
-          </strong>
+          </dd>
 
         </div>
 
-      </div>
-
+      </dl>
     </section>
 
-    <section class="tasks-section">
+    <section
+      class="tasks-section"
+      aria-labelledby="tasks-heading"
+    >
 
-      <div class="tasks-section-heading">
+      <header class="tasks-section-heading">
 
         <div>
 
@@ -226,13 +223,16 @@ container.innerHTML = `
             Project Work
           </p>
 
-          <h2>
+          <h2 id="tasks-heading">
             Tasks
           </h2>
 
         </div>
 
-        <div class="tasks-section-actions">
+        <div
+          class="tasks-section-actions"
+          aria-label="Task actions"
+        >
 
           <button
             type="button"
@@ -244,9 +244,20 @@ container.innerHTML = `
 
         </div>
 
-      </div>
+      </header>
 
-      <div class="task-filters">
+      <div
+        class="task-filters"
+        role="group"
+        aria-labelledby="task-filter-heading"
+      >
+
+        <span
+          id="task-filter-heading"
+          class="task-filter-label"
+        >
+          Filter by
+        </span>
 
         <div class="task-filter-group">
 
@@ -254,35 +265,35 @@ container.innerHTML = `
             Status
           </label>
 
-<select id="task-status-filter">
-  <option
-    value=""
-    ${taskStatusFilter === "" ? "selected" : ""}
-  >
-    All Statuses
-  </option>
+          <select
+            id="task-status-filter"
+            aria-label="Filter tasks by status"
+          >
+            <option value="">
+              All Statuses
+            </option>
 
-  <option
-    value="todo"
-    ${taskStatusFilter === "todo" ? "selected" : ""}
-  >
-    Todo
-  </option>
+            <option
+              value="todo"
+              ${taskStatusFilter === "todo" ? "selected" : ""}
+            >
+              Todo
+            </option>
 
-  <option
-    value="in-progress"
-    ${taskStatusFilter === "in-progress" ? "selected" : ""}
-  >
-    In Progress
-  </option>
+            <option
+              value="in-progress"
+              ${taskStatusFilter === "in-progress" ? "selected" : ""}
+            >
+              In Progress
+            </option>
 
-  <option
-    value="done"
-    ${taskStatusFilter === "done" ? "selected" : ""}
-  >
-    Done
-  </option>
-</select>
+            <option
+              value="done"
+              ${taskStatusFilter === "done" ? "selected" : ""}
+            >
+              Done
+            </option>
+          </select>
 
         </div>
 
@@ -292,35 +303,35 @@ container.innerHTML = `
             Priority
           </label>
 
-<select id="task-priority-filter">
-  <option
-    value=""
-    ${taskPriorityFilter === "" ? "selected" : ""}
-  >
-    All Priorities
-  </option>
+          <select
+            id="task-priority-filter"
+            aria-label="Filter tasks by priority"
+          >
+            <option value="">
+              All Priorities
+            </option>
 
-  <option
-    value="low"
-    ${taskPriorityFilter === "low" ? "selected" : ""}
-  >
-    Low
-  </option>
+            <option
+              value="low"
+              ${taskPriorityFilter === "low" ? "selected" : ""}
+            >
+              Low
+            </option>
 
-  <option
-    value="medium"
-    ${taskPriorityFilter === "medium" ? "selected" : ""}
-  >
-    Medium
-  </option>
+            <option
+              value="medium"
+              ${taskPriorityFilter === "medium" ? "selected" : ""}
+            >
+              Medium
+            </option>
 
-  <option
-    value="high"
-    ${taskPriorityFilter === "high" ? "selected" : ""}
-  >
-    High
-  </option>
-</select>
+            <option
+              value="high"
+              ${taskPriorityFilter === "high" ? "selected" : ""}
+            >
+              High
+            </option>
+          </select>
 
         </div>
 
@@ -337,6 +348,7 @@ container.innerHTML = `
       <div
         class="project-tasks-container"
         id="tasks-${escapeHtml(project.id)}"
+        aria-live="polite"
       ></div>
 
     </section>

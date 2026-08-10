@@ -1,5 +1,5 @@
 /* ==========================
-   Application Layout
+Application Layout
 ========================== */
 
 .app-header {
@@ -84,7 +84,7 @@
 }
 
 /* ==========================
-   Main Application Shell
+Main Application Shell
 ========================== */
 
 .app-shell {
@@ -92,11 +92,13 @@
 
   display: grid;
 
-  grid-template-columns: 270px minmax(0, 1fr);
+  grid-template-columns:
+    270px
+    minmax(0, 1fr);
 }
 
 /* ==========================
-   Sidebar
+Sidebar
 ========================== */
 
 .sidebar {
@@ -146,7 +148,7 @@
 }
 
 /* ==========================
-   Search
+Search
 ========================== */
 
 .sidebar-search {
@@ -210,7 +212,7 @@
 }
 
 /* ==========================
-   Project Filters
+Project Filters
 ========================== */
 
 .sidebar-filter-section {
@@ -242,6 +244,11 @@
   letter-spacing: 0.06em;
 }
 
+.sidebar-section-heading h3 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
 .text-btn {
   padding: 0;
 
@@ -270,8 +277,24 @@
   cursor: pointer;
 }
 
+.filter-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.filter-group label {
+  color: var(--color-text-muted);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 500;
+}
+
 /* ==========================
-   Project List Header
+Project List Header
 ========================== */
 
 .sidebar-projects-header {
@@ -293,6 +316,11 @@
   letter-spacing: 0.06em;
 }
 
+.sidebar-projects-header h3 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
 .project-count {
   min-width: 22px;
 
@@ -309,8 +337,12 @@
   text-align: center;
 }
 
+.project-navigation {
+  display: block;
+}
+
 /* ==========================
-   Dashboard
+Dashboard
 ========================== */
 
 .dashboard {
@@ -330,7 +362,7 @@
 }
 
 /* ==========================
-   Dashboard Empty State
+Dashboard Empty State
 ========================== */
 
 .dashboard-empty-state {
@@ -401,7 +433,7 @@
 }
 
 /* ==========================
-   Loading / Error
+Loading / Error
 ========================== */
 
 .loading-state,
@@ -423,12 +455,14 @@
 }
 
 /* ==========================
-   Responsive
+Responsive
 ========================== */
 
 @media (max-width: 900px) {
   .app-shell {
-    grid-template-columns: 230px minmax(0, 1fr);
+    grid-template-columns:
+      230px
+      minmax(0, 1fr);
   }
 
   .dashboard-main {

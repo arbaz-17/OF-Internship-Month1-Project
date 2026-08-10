@@ -1,35 +1,32 @@
 import { openModal, closeModal } from "./modal.js";
-import {
-  setButtonLoading,
-  resetButton,
-} from "./buttonLoading.js";
+
+import { setButtonLoading, resetButton } from "./buttonLoading.js";
 
 let confirmCallback = null;
 
 export function initializeConfirmModal() {
   const closeButton = document.getElementById("close-confirm-modal");
+
   const cancelButton = document.getElementById("cancel-confirm");
+
   const confirmButton = document.getElementById("confirm-action");
 
   closeButton?.addEventListener("click", closeConfirmModal);
+
   cancelButton?.addEventListener("click", closeConfirmModal);
 
-confirmButton?.addEventListener("click", async () => {
-  if (!confirmCallback) return;
+  confirmButton?.addEventListener("click", async () => {
+    if (!confirmCallback) return;
 
-  setButtonLoading(
-    confirmButton,
-    "Deleting..."
-  );
+    setButtonLoading(confirmButton, "Deleting...");
 
-  try {
-    await confirmCallback();
-  } finally {
-    resetButton(confirmButton);
-
-    closeConfirmModal();
-  }
-});
+    try {
+      await confirmCallback();
+    } finally {
+      resetButton(confirmButton);
+      closeConfirmModal();
+    }
+  });
 }
 
 export function showConfirmation({
@@ -38,11 +35,21 @@ export function showConfirmation({
   confirmText = "Confirm",
   onConfirm,
 }) {
-  document.getElementById("confirm-title").textContent = title;
+  const titleElement = document.getElementById("confirm-title");
 
-  document.getElementById("confirm-message").textContent = message;
+  const messageElement = document.getElementById("confirm-message");
 
-  document.getElementById("confirm-action").textContent = confirmText;
+  const confirmButton = document.getElementById("confirm-action");
+
+  if (!titleElement || !messageElement || !confirmButton) {
+    return;
+  }
+
+  titleElement.textContent = title;
+
+  messageElement.textContent = message;
+
+  confirmButton.textContent = confirmText;
 
   confirmCallback = onConfirm;
 

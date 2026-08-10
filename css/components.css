@@ -1,5 +1,5 @@
 /* ==========================
-   Reusable Components
+Reusable Components
 ========================== */
 
 button {
@@ -23,7 +23,7 @@ button:disabled {
 }
 
 /* ==========================
-   Primary Button
+Primary Button
 ========================== */
 
 .primary-btn {
@@ -43,7 +43,7 @@ button:disabled {
 }
 
 /* ==========================
-   Secondary Button
+Secondary Button
 ========================== */
 
 .secondary-btn {
@@ -65,7 +65,7 @@ button:disabled {
 }
 
 /* ==========================
-   Danger Button
+Danger Button
 ========================== */
 
 .danger-btn {
@@ -89,7 +89,7 @@ button:disabled {
 }
 
 /* ==========================
-   Badges
+Badges
 ========================== */
 
 .badge {
@@ -127,7 +127,7 @@ button:disabled {
 }
 
 /* ==========================
-   Priority Variants
+Priority Variants
 ========================== */
 
 .priority-high {
@@ -155,7 +155,7 @@ button:disabled {
 }
 
 /* ==========================
-   Empty State
+Empty State
 ========================== */
 
 .empty-state {
@@ -171,7 +171,7 @@ button:disabled {
 }
 
 /* ==========================
-   Loading Buttons
+Loading Buttons
 ========================== */
 
 button.loading {
