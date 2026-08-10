@@ -64,27 +64,53 @@ export function renderProjects(projects, selectedProjectId, onProjectSelect) {
 
     </div>
 
-    <div class="project-card-meta">
+<div class="project-card-meta">
 
-        <span>
-            Created:
+    <div class="project-meta-item">
+        <span class="meta-label">Start</span>
+        <span class="meta-value">
+            ${
+              project.start_date
+                ? new Date(project.start_date).toLocaleDateString()
+                : "N/A"
+            }
+        </span>
+    </div>
+
+    <div class="project-meta-item">
+        <span class="meta-label">Due</span>
+        <span class="meta-value">
+            ${
+              project.due_date
+                ? new Date(project.due_date).toLocaleDateString()
+                : "N/A"
+            }
+        </span>
+    </div>
+
+    <div class="project-meta-item">
+        <span class="meta-label">Created</span>
+        <span class="meta-value">
             ${
               project.created_at
                 ? new Date(project.created_at).toLocaleDateString()
                 : "N/A"
             }
         </span>
+    </div>
 
-        <span>
-            Updated:
+    <div class="project-meta-item">
+        <span class="meta-label">Updated</span>
+        <span class="meta-value">
             ${
               project.updated_at
                 ? new Date(project.updated_at).toLocaleDateString()
                 : "N/A"
             }
         </span>
-
     </div>
+
+</div>
 
     <div class="project-section-header">
 

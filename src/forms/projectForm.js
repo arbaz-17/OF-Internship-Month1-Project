@@ -50,6 +50,15 @@ export function populateProjectForm(projectId) {
 
 document.getElementById("project-priority").value =
   project.priority;
+  document.getElementById("project-start-date").value =
+  project.start_date
+    ? project.start_date.split("T")[0]
+    : "";
+
+document.getElementById("project-due-date").value =
+  project.due_date
+    ? project.due_date.split("T")[0]
+    : "";
     
 
   setEditingProjectId(projectId);
@@ -70,6 +79,8 @@ export function resetProjectForm() {
   document.getElementById("project-status").value = "active";
 
   document.getElementById("project-priority").value = "medium";
+  document.getElementById("project-start-date").value = "";
+document.getElementById("project-due-date").value = "";
 
   document.getElementById(
     "project-submit-btn"
@@ -126,6 +137,8 @@ const projectData = {
   description: document.getElementById("project-description").value,
   status: document.getElementById("project-status").value,
   priority: document.getElementById("project-priority").value,
+  start_date: document.getElementById("project-start-date").value,
+  due_date: document.getElementById("project-due-date").value,
 };
 
   const editingProjectId =

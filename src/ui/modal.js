@@ -1,4 +1,4 @@
-import { selectProject } from "../controllers/projectController.js";
+import {  setCurrentProject } from "../controllers/projectController.js";
 import { resetProjectForm } from "../forms/projectForm.js";
 
 export function openModal(modalId) {
@@ -63,7 +63,7 @@ function handleAddTaskClick(event) {
 
   const projectId = addTaskButton.dataset.projectId;
 
-  selectProject(projectId);
+  setCurrentProject(projectId);
 
   openModal("task-modal");
 }

@@ -106,3 +106,38 @@ form {
 }
 
 
+/* Creates a horizontal row and adds space between the two columns */
+.form-row {
+  display: flex;
+  gap: 16px; 
+  margin-bottom: 16px;
+}
+
+/* Stacks the label on top of the input, and makes both columns equal width */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+  margin-bottom: 16px; /* Margin for standalone groups like the textarea */
+}
+
+/* Removes double margin for groups inside a row */
+.form-row .form-group {
+  margin-bottom: 0;
+}
+
+/* Ensures inputs fill the container and add some basic styling spacing */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box; 
+  padding: 8px; /* Adjust to match your design system */
+  margin-top: 4px; /* Space between label and input */
+}
+
+/* Allows textarea to resize nicely */
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}

@@ -68,3 +68,11 @@ export async function deleteProject(projectId) {
     projectId,
   });
 }
+
+export function setCurrentProject(projectId) {
+  setSelectedProjectId(projectId);
+
+  eventBus.emit(EVENTS.PROJECT_SELECTED, {
+    projectId,
+  });
+}

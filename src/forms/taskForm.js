@@ -46,6 +46,8 @@ async function handleSubmit(event) {
     description: document.getElementById("task-description").value,
     priority: document.getElementById("task-priority").value,
     status: document.getElementById("task-status").value,
+    start_date: document.getElementById("task-start-date").value,
+    due_date: document.getElementById("task-due-date").value,
   };
 
 setButtonLoading(
@@ -178,6 +180,16 @@ function populateTaskForm(taskId) {
   document.getElementById("task-status").value =
     task.status;
 
+    document.getElementById("task-start-date").value =
+  task.start_date
+    ? task.start_date.split("T")[0]
+    : "";
+
+document.getElementById("task-due-date").value =
+  task.due_date
+    ? task.due_date.split("T")[0]
+    : "";
+
 document.getElementById(
   "task-submit-btn"
 ).textContent = "Save Changes";
@@ -187,7 +199,7 @@ function formReset() {
   editingTaskId = null;
 
   document.getElementById("task-form").reset();
-
+  
 document.getElementById(
   "task-submit-btn"
 ).textContent = "Create Task";
