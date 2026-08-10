@@ -45,6 +45,8 @@ export async function createTask(taskData) {
     await taskApi.createTask({
       ...taskData,
       title: taskData.title.trim(),
+      created_at: Date.now(),
+      updated_at: Date.now(),
     });
 
   addTask(createdTask);
@@ -71,6 +73,8 @@ export async function updateExistingTask(
       title:
         taskData.title?.trim() ??
         existingTask.title,
+      created_at: existingTask.created_at,
+    updated_at: new Date().toISOString(),
     });
 
   updateTaskState(updatedTask);

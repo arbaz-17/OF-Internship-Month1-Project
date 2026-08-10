@@ -44,6 +44,7 @@ export function removeProjectState(projectId) {
 
 export function getTasks() {
   return tasks;
+  console.log("Current Tasks: ",getTasks())
 }
 
 export function setTasks(newTasks) {

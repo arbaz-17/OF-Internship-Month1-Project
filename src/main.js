@@ -2,7 +2,6 @@ import { setProjects, setTasks } from "./state/appState.js";
 
 import {
   getFilteredProjects,
-  getFirstProject,
   getProjectById,
 } from "./services/projectService.js";
 
@@ -18,7 +17,6 @@ import {
 } from "./state/appState.js";
 
 import { renderProjects } from "./ui/projectRenderer.js";
-import { renderProjectDetails } from "./ui/layoutRenderer.js";
 import { renderTasks } from "./ui/taskRenderer.js";
 import { renderNoProjectsState } from "./ui/emptyStateRenderer.js";
 import { renderLoadingState } from "./ui/loadingStateRenderer.js";
@@ -28,6 +26,11 @@ import { initializeProjectForm } from "./forms/projectForm.js";
 import { initializeTaskForm } from "./forms/taskForm.js";
 import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
 import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
+import {
+  initializeModal,
+  bindModalButtons,
+} from "./ui/modal.js";
+import { initializeConfirmModal } from "./ui/confirmModal.js";
 
 import { selectProject } from "./controllers/projectController.js";
 
@@ -52,20 +55,30 @@ function renderApplication() {
 
   const projects = getFilteredProjects();
 
-  const selectedProject = getProjectById(getSelectedProjectId());
-
-  if (!selectedProject) {
+  // Show empty state only when there are no projects.
+  if (projects.length === 0) {
     renderNoProjectsState();
     return;
   }
 
-  const tasks = getTasksByProjectId(selectedProject.id);
+  const selectedProject = getProjectById(
+    getSelectedProjectId()
+  );
 
-  renderProjects(projects, selectedProject.id, selectProject);
+  renderProjects(
+    projects,
+    selectedProject?.id ?? null,
+    selectProject
+  );
 
-  renderProjectDetails(selectedProject);
+  // Render tasks only if a project is expanded.
+  if (selectedProject) {
+    const tasks = getTasksByProjectId(
+      selectedProject.id
+    );
 
-  renderTasks(tasks);
+    renderTasks(tasks);
+  }
 }
 
 function loadCachedWorkspace() {
@@ -102,12 +115,6 @@ async function initializeWorkspace() {
   const hasCache = loadCachedWorkspace();
 
   if (hasCache) {
-    const firstProject = getFirstProject();
-
-    if (firstProject) {
-      selectProject(firstProject.id);
-    }
-
     renderApplication();
   } else {
     setLoading(true);
@@ -117,24 +124,16 @@ async function initializeWorkspace() {
   try {
     await fetchLatestWorkspace();
 
-    const firstProject = getFirstProject();
-
-    if (firstProject) {
-      selectProject(firstProject.id);
-    } else {
-      renderNoProjectsState();
-    }
+    // Intentionally do not auto-select any project.
   } catch (error) {
     console.error(error);
 
     if (!hasCache) {
       setError("Unable to load application data.");
-
       renderApplication();
     }
   } finally {
     setLoading(false);
-
     renderApplication();
   }
 }
@@ -150,19 +149,47 @@ async function initializeApplication() {
 
   initializeProjectFilterForm();
 
-  eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
+  initializeModal("project-modal");
+  initializeModal("task-modal");
 
-  eventBus.subscribe(EVENTS.PROJECT_UPDATED, renderApplication);
+  bindModalButtons();
 
-  eventBus.subscribe(EVENTS.PROJECT_DELETED, renderApplication);
+  initializeConfirmModal();
 
-  eventBus.subscribe(EVENTS.PROJECT_CREATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_SELECTED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.TASK_CREATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_UPDATED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.TASK_UPDATED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_DELETED,
+    renderApplication
+  );
 
-  eventBus.subscribe(EVENTS.TASK_DELETED, renderApplication);
+  eventBus.subscribe(
+    EVENTS.PROJECT_CREATED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.TASK_CREATED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.TASK_UPDATED,
+    renderApplication
+  );
+
+  eventBus.subscribe(
+    EVENTS.TASK_DELETED,
+    renderApplication
+  );
 }
 
 initializeApplication();

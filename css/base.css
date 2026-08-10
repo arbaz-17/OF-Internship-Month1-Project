@@ -1,0 +1,79 @@
+/* ==========================
+   Base & Design System (Orange & Black)
+========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+  /* Orange & Black Palette */
+  --color-primary: #f97316; /* Vibrant Orange */
+  --color-primary-hover: #ea580c; /* Darker Orange */
+  
+  --color-background: #09090b; /* Deep Black */
+  --color-surface: #18181b; /* Dark Gray for cards/modals */
+  
+  --color-text: #fafafa; /* Off-White for readability */
+  --color-text-muted: #a1a1aa; /* Muted Gray */
+  
+  --color-border: #27272a;
+  --color-border-hover: #3f3f46;
+  
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+
+  /* Typography */
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.875rem;
+  --fs-lg: 1rem;
+  --fs-xl: 1.25rem;
+
+  /* Radiuses */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --transition: 0.15s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--fs-md);
+  background: var(--color-background);
+  color: var(--color-text);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  font-size: var(--fs-md);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: var(--transition);
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-primary);
+  background: var(--color-background);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #52525b;
+}

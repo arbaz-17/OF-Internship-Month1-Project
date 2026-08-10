@@ -13,6 +13,14 @@ import {
 import {
   getProjectById,
 } from "../services/projectService.js";
+import { openModal } from "../ui/modal.js";
+import { closeModal } from "../ui/modal.js";
+import { showConfirmation } from "../ui/confirmModal.js";
+
+import {
+  setButtonLoading,
+  resetButton,
+} from "../ui/buttonLoading.js";
 
 export function initializeProjectForm() {
   const form = document.getElementById("project-form");
@@ -42,19 +50,47 @@ export function populateProjectForm(projectId) {
 
 document.getElementById("project-priority").value =
   project.priority;
+  document.getElementById("project-start-date").value =
+  project.start_date
+    ? project.start_date.split("T")[0]
+    : "";
+
+document.getElementById("project-due-date").value =
+  project.due_date
+    ? project.due_date.split("T")[0]
+    : "";
     
 
   setEditingProjectId(projectId);
+  openModal("project-modal");
 
   document.querySelector(
     "#project-form button"
   ).textContent = "Update Project";
 }
 
+export function resetProjectForm() {
+  const form = document.getElementById("project-form");
+
+  form.reset();
+
+  clearEditingProjectId();
+
+  document.getElementById("project-status").value = "active";
+
+  document.getElementById("project-priority").value = "medium";
+  document.getElementById("project-start-date").value = "";
+document.getElementById("project-due-date").value = "";
+
+  document.getElementById(
+    "project-submit-btn"
+  ).textContent = "Create Project";
+}
+
 function handleEditProject(event) {
-  const button = event.target.closest(
-    "#edit-project-btn"
-  );
+const button = event.target.closest(
+  ".edit-project-btn"
+);
 
   if (!button) return;
 
@@ -63,31 +99,37 @@ function handleEditProject(event) {
   );
 }
 
-async function handleDeleteProject(event) {
-  const button = event.target.closest(
-    "#delete-project-btn"
-  );
+function handleDeleteProject(event) {
+  const button = event.target.closest(".delete-project-btn");
 
   if (!button) return;
 
-  const confirmed = confirm(
-    "Delete this project and all its tasks?"
-  );
+  const projectId = button.dataset.projectId;
 
-  if (!confirmed) return;
+  const project = getProjectById(projectId);
 
-  try {
-    await deleteProject(
-      button.dataset.projectId
-    );
-  } catch (error) {
-    console.error(error);
-    alert(error.message);
-  }
+  showConfirmation({
+    title: "Delete Project",
+    message: `Are you sure you want to delete "${project.name}"?\n\nAll associated tasks will also be deleted.`,
+    confirmText: "Delete Project",
+
+    onConfirm: async () => {
+      try {
+        await deleteProject(projectId);
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    },
+  });
 }
 
 async function handleSubmit(event) {
   event.preventDefault();
+
+const submitButton = document.getElementById(
+  "project-submit-btn"
+);  
 
 const projectData = {
   name: document.getElementById("project-name").value,
@@ -95,12 +137,21 @@ const projectData = {
   description: document.getElementById("project-description").value,
   status: document.getElementById("project-status").value,
   priority: document.getElementById("project-priority").value,
+  start_date: document.getElementById("project-start-date").value,
+  due_date: document.getElementById("project-due-date").value,
 };
 
   const editingProjectId =
     getEditingProjectId();
 
-  try {
+setButtonLoading(
+  submitButton,
+  editingProjectId
+    ? "Updating..."
+    : "Creating..."
+);
+
+try {
     if (editingProjectId) {
       await updateProject(
         editingProjectId,
@@ -116,14 +167,16 @@ const projectData = {
       await createNewProject(projectData);
     }
 
-    event.target.reset();
-    document.getElementById("project-status").value =
-  "active";
+resetProjectForm();
 
-document.getElementById("project-priority").value =
-  "medium";
+closeModal("project-modal");
   } catch (error) {
     console.error(error);
     alert(error.message);
   }
+  finally {
+
+    resetButton(submitButton);
+
+}
 }

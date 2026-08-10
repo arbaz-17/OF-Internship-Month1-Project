@@ -1,0 +1,215 @@
+/* ==========================
+   Project List & Cards
+========================== */
+.project-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.project-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: var(--transition);
+}
+
+.project-card:hover {
+  border-color: var(--color-border-hover);
+  background: #212124; /* Subtle highlight on dark */
+}
+
+.project-card.active {
+  border-color: var(--color-primary);
+}
+
+/* --- Updated Header Layout --- */
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically centers the arrow with the left content */
+  cursor: pointer;
+}
+
+/* Groups the title and badges on the left side */
+/* Groups the title and badges and stacks them vertically */
+.header-main-content {
+  display: flex;
+  flex-direction: column; /* This forces the badges under the title */
+  align-items: flex-start;
+  gap: 0.75rem; /* Controls the space between the title and the badges */
+}
+
+.project-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.project-title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.project-category {
+  color: var(--color-primary); /* Use orange for the category */
+  font-size: var(--fs-xs);
+}
+
+.project-badges {
+  display: flex;
+  gap: 0.4rem;
+  /* Removed top-margin so they sit inline with the title grouping */
+}
+
+/* --- New SVG Expand Icon Wrapper --- */
+.expand-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-border); /* Subtle dark circle background */
+  transition: var(--transition);
+  flex-shrink: 0; /* Prevents squishing on small mobile screens */
+}
+
+.project-card:hover .expand-icon-wrapper {
+  background: var(--color-border-hover);
+}
+
+.expand-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.project-card.active .expand-icon-wrapper {
+  background: rgba(249, 115, 22, 0.15); /* Orange tinted circle when active */
+}
+
+.project-card.active .expand-icon {
+  transform: rotate(180deg);
+  color: var(--color-primary); /* Orange arrow */
+}
+
+/* --- Project Content & Actions --- */
+.project-description {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  margin: 1rem 0;
+}
+
+.project-card-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.project-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.meta-label {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.meta-value {
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+}
+
+/* ==========================
+   Section Headers
+========================== */
+
+.project-section-header,
+.tasks-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.project-section-header h3,
+.tasks-section-header h3 {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.project-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tasks-section-header {
+  margin-bottom: 1.25rem;
+}
+
+/* ==========================
+   Project Action Buttons
+========================== */
+
+.project-section-header button,
+.tasks-section-header button {
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+/* 1. Add Task (Primary Glowing Button) */
+.add-task-btn {
+  background: var(--color-primary);
+  color: #000000;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15); /* Subtle orange glow */
+}
+
+.add-task-btn:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  transform: translateY(-1px);
+}
+
+.edit-project-btn {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #ffffff;
+  font-weight: 600;
+}
+
+.edit-project-btn:hover {
+  background: #f3f4f6;
+  border-color: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+.delete-project-btn {
+  background: var(--color-danger);
+  color: #ffffff;
+  border: 1px solid var(--color-danger);
+  font-weight: 600;
+}
+
+.delete-project-btn:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  transform: translateY(-1px);
+}

@@ -1,18 +1,13 @@
 export function renderErrorState(errorMessage) {
-  const projectDetailsContainer = document.getElementById(
-    "project-details"
-  );
+  const container = document.getElementById("project-list");
 
-  const taskListContainer = document.getElementById(
-    "task-list"
-  );
+  container.innerHTML = `
+    <section class="error-state">
 
-  projectDetailsContainer.innerHTML = `
-    <div class="error-state">
-      <h2>Something went wrong</h2>
+      <h2>Unable to load workspace</h2>
+
       <p>${errorMessage}</p>
-    </div>
-  `;
 
-  taskListContainer.innerHTML = "";
+    </section>
+  `;
 }

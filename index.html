@@ -1,97 +1,217 @@
-<body>
-  <header class="app-header">
-    <h1>Project Management Application</h1>
-  </header>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Management System</title>
 
-  <main class="app-layout">
-    <section class="project-search">
-      <input
-        type="search"
-        id="project-search"
-        placeholder="Search projects..."
-      />
-    </section>
+    <!-- Split CSS Files -->
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/projects.css" />
+    <link rel="stylesheet" href="/css/tasks.css" />
+    <link rel="stylesheet" href="/css/modals.css" />
+  </head>
 
-    <section class="project-filters">
-      <select id="project-status-filter">
-        <option value="">All Statuses</option>
-        <option value="todo">Todo</option>
-        <option value="in-progress">In Progress</option>
-        <option value="done">Done</option>
-      </select>
+  <body>
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">OptimusFox - PMS</h1>
 
-      <select id="project-priority-filter">
-        <option value="">All Priorities</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
+        <div class="header-actions">
+          <div class="search-wrapper">
+            <input
+              type="search"
+              id="project-search"
+              placeholder="Search projects..."
+            />
 
-      <button type="button" id="reset-project-filters">Reset Filters</button>
-    </section>
+            <button
+              type="button"
+              id="clear-project-search"
+              aria-label="Clear search"
+            >
+              ✕
+            </button>
+          </div>
 
-    <aside id="project-list"></aside>
-    <aside id="project-list"></aside>
+          <button type="button" id="open-project-modal" class="primary-btn">
+            Add Project
+          </button>
+        </div>
+      </div>
+    </header>
 
-    <section class="project-form">
-      <h2>Create Project</h2>
+    <!-- Filters -->
+    <section class="filters-bar">
+      <div class="filters">
+        <select id="project-status-filter">
+          <option value="">All Statuses</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="on-hold">On Hold</option>
+        </select>
 
-      <form id="project-form">
-        <input
-          type="text"
-          id="project-name"
-          placeholder="Project Name"
-          required
-        />
-
-        <input type="text" id="project-category" placeholder="Category" />
-
-        <textarea id="project-description" placeholder="Description"></textarea>
-
-        <select id="project-status">
-  <option value="active">Active</option>
-  <option value="completed">Completed</option>
-  <option value="on-hold">On Hold</option>
-</select>
-
-<select id="project-priority">
-  <option value="low">Low</option>
-  <option value="medium" selected>Medium</option>
-  <option value="high">High</option>
-</select>
-
-        <button type="submit">Create Project</button>
-      </form>
-    </section>
-
-    <section class="content">
-      <div id="project-details"></div>
-      <form id="task-form">
-        <input id="task-title" placeholder="Task Title" required />
-
-        <textarea id="task-description" placeholder="Description"> </textarea>
-
-        <select id="task-priority">
+        <select id="project-priority-filter">
+          <option value="">All Priorities</option>
           <option value="low">Low</option>
-
           <option value="medium">Medium</option>
-
           <option value="high">High</option>
         </select>
 
-        <select id="task-status">
-          <option value="todo">Todo</option>
-
-          <option value="in-progress">In Progress</option>
-
-          <option value="done">Done</option>
-        </select>
-
-        <button>Create Task</button>
-      </form>
-      <div id="task-list"></div>
+        <button type="button" id="reset-project-filters" class="secondary-btn">
+          Reset Filters
+        </button>
+      </div>
     </section>
-  </main>
 
-  <script type="module" src="./src/main.js"></script>
-</body>
+    <!-- Workspace -->
+    <main class="workspace">
+      <section id="project-list" class="project-list"></section>
+    </main>
+
+    <!-- Project Modal -->
+    <section class="modal project-modal" id="project-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Project Details</h2>
+      <button type="button" id="close-project-modal" class="modal-close">
+        ✕
+      </button>
+    </div>
+    <form id="project-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="project-name">Name</label>
+          <input id="project-name" placeholder="Ex. OptimusFox Portal" required/>
+        </div>
+        <div class="form-group">
+          <label for="project-category">Category</label>
+          <select id="project-category">
+            <option value="software-development">Software Development</option>
+            <option value="marketing-campaign">Marketing Campaign</option>
+            <option value="internal-operations">Internal Operations</option>
+            <option value="client-deliverable">Client Deliverable</option>
+            <option value="testing">Testing</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="project-description">Description</label>
+        <textarea id="project-description" placeholder="Add description about the project..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="project-status">Status</label>
+          <select id="project-status">
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="on-hold">On Hold</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="project-priority">Priority</label>
+          <select id="project-priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="project-start-date">Start Date</label>
+          <input type="date" id="project-start-date" />
+        </div>
+        <div class="form-group">
+          <label for="project-due-date">Due Date</label>
+          <input type="date" id="project-due-date"/>
+        </div>
+      </div>
+
+      <button id="project-submit-btn" type="submit" class="primary-btn">
+        Create Project
+      </button>
+      
+    </form>
+  </div>
+</section>
+
+    <!-- Task Modal -->
+    <section class="modal task-modal" id="task-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Task Details</h2>
+
+          <button type="button" id="close-task-modal" class="modal-close">
+            ✕
+          </button>
+        </div>
+
+        <form id="task-form">
+          <input
+            type="text"
+            id="task-title"
+            placeholder="Task Title"
+            required
+          />
+
+          <textarea id="task-description" placeholder="Description"></textarea>
+
+          <label for="task-status">Status</label>
+          <select id="task-status">
+            <option value="todo">Todo</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+
+          <label for="task-priority">Priority</label>
+          <select id="task-priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <label for="task-start-date">Start Date</label>
+          <input type="date" id="task-start-date" />
+
+          <label for="task-due-date">Due Date</label>
+          <input type="date" id="task-due-date"/>
+
+          <div class="form-actions">
+            <button id="task-submit-btn" type="submit" class="primary-btn">
+              Create Task
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="confirm-modal" class="modal">
+      <div class="modal-content confirm-modal-content">
+        <div class="modal-header">
+          <h2 id="confirm-title">Delete</h2>
+
+          <button type="button" id="close-confirm-modal" class="modal-close">
+            ✕
+          </button>
+        </div>
+
+        <p id="confirm-message">Are you sure?</p>
+
+        <div class="form-actions">
+          <button type="button" id="cancel-confirm" class="secondary-btn">
+            Cancel
+          </button>
+
+          <button type="button" id="confirm-action" class="danger-btn">
+            Delete
+          </button>
+        </div>
+      </div>
+    </section>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

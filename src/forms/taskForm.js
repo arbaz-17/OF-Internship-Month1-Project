@@ -12,6 +12,15 @@ import {
   getTaskById,
 } from "../services/taskService.js";
 
+import { closeModal } from "../ui/modal.js";
+import { openModal } from "../ui/modal.js";
+import { showConfirmation } from "../ui/confirmModal.js";
+
+import {
+  setButtonLoading,
+  resetButton,
+} from "../ui/buttonLoading.js";
+
 let editingTaskId = null;
 
 export function initializeTaskForm() {
@@ -27,6 +36,9 @@ export function initializeTaskForm() {
 
 async function handleSubmit(event) {
   event.preventDefault();
+  const submitButton = document.getElementById(
+  "task-submit-btn"
+);
 
   const taskData = {
     project_id: getSelectedProjectId(),
@@ -34,9 +46,18 @@ async function handleSubmit(event) {
     description: document.getElementById("task-description").value,
     priority: document.getElementById("task-priority").value,
     status: document.getElementById("task-status").value,
+    start_date: document.getElementById("task-start-date").value,
+    due_date: document.getElementById("task-due-date").value,
   };
 
-  try {
+setButtonLoading(
+  submitButton,
+  editingTaskId
+    ? "Updating..."
+    : "Creating..."
+);
+
+try {
     if (editingTaskId) {
       await updateTask(
         editingTaskId,
@@ -49,10 +70,16 @@ async function handleSubmit(event) {
     }
 
     formReset();
+    closeModal("task-modal");
   } catch (error) {
     console.error(error);
     alert(error.message);
   }
+  finally {
+
+    resetButton(submitButton);
+
+}
 }
 
 async function handleTaskActions(event) {
@@ -66,27 +93,31 @@ async function handleTaskActions(event) {
     return;
   }
 
-  const deleteButton =
-    event.target.closest(".delete-task");
+const deleteButton =
+  event.target.closest(".delete-task");
 
-  if (deleteButton) {
-    const confirmed = confirm(
-      "Delete this task?"
-    );
+if (deleteButton) {
+  const taskId = deleteButton.dataset.taskId;
 
-    if (!confirmed) return;
+  const task = getTaskById(taskId);
 
-    try {
-      await deleteTask(
-        deleteButton.dataset.taskId
-      );
-    } catch (error) {
-      console.error(error);
-      alert(error.message);
-    }
+  showConfirmation({
+    title: "Delete Task",
+    message: `Are you sure you want to delete "${task.title}"?\n\nThis action cannot be undone.`,
+    confirmText: "Delete Task",
 
-    return;
-  }
+    onConfirm: async () => {
+      try {
+        await deleteTask(taskId);
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    },
+  });
+
+  return;
+}
 
   const statusSelect =
     event.target.closest(".task-status");
@@ -135,6 +166,7 @@ function populateTaskForm(taskId) {
   if (!task) return;
 
   editingTaskId = taskId;
+  openModal("task-modal");
 
   document.getElementById("task-title").value =
     task.title;
@@ -148,15 +180,27 @@ function populateTaskForm(taskId) {
   document.getElementById("task-status").value =
     task.status;
 
-  document.querySelector(
-    "#task-form button"
-  ).textContent = "Update Task";
+    document.getElementById("task-start-date").value =
+  task.start_date
+    ? task.start_date.split("T")[0]
+    : "";
+
+document.getElementById("task-due-date").value =
+  task.due_date
+    ? task.due_date.split("T")[0]
+    : "";
+
+document.getElementById(
+  "task-submit-btn"
+).textContent = "Save Changes";
 }
 
 function formReset() {
-  document.getElementById("task-form").reset();
+  editingTaskId = null;
 
-  document.querySelector(
-    "#task-form button"
-  ).textContent = "Create Task";
+  document.getElementById("task-form").reset();
+  
+document.getElementById(
+  "task-submit-btn"
+).textContent = "Create Task";
 }

@@ -1,15 +1,13 @@
 export function renderNoProjectsState() {
-  document.getElementById("project-list").innerHTML = `
-    <p>No projects available.</p>
-  `;
+  const container = document.getElementById("project-list");
 
-  document.getElementById("project-details").innerHTML = `
-    <h2>No Project Selected</h2>
+  container.innerHTML = `
+    <section class="empty-state">
+      <h2>No Projects Yet</h2>
 
-    <p>Create your first project to get started.</p>
-  `;
-
-  document.getElementById("task-list").innerHTML = `
-    <p>No tasks to display.</p>
+      <p>
+        Create your first project to start managing your work.
+      </p>
+    </section>
   `;
 }

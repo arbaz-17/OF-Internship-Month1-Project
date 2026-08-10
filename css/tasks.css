@@ -1,0 +1,100 @@
+/* ==========================
+   Task Section (Checklist Style)
+========================== */
+.project-tasks-container {
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.task-card {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Remove the bottom border from the very last task */
+.task-card:last-child {
+  border-bottom: none;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.task-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-title-group h3 {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.task-badges {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.task-description {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* --- Task Action Buttons --- */
+.task-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.task-actions button {
+  padding: 0.3rem 0.6rem;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+}
+
+.edit-task {
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.edit-task:hover {
+  background: #27272a;
+  border-color: var(--color-border-hover);
+}
+
+.delete-task {
+  color: var(--color-danger);
+}
+
+.delete-task:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.empty-tasks {
+  padding: 1rem 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-style: italic;
+}
