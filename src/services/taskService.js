@@ -4,6 +4,8 @@ import {
   addTask,
   updateTaskState,
   removeTaskState,
+  getTaskStatusFilter,
+  getTaskPriorityFilter,
 } from "../state/appState.js";
 
 import { storageService } from "../storage/storageService.js";
@@ -23,15 +25,33 @@ export function getAllTasks() {
 }
 
 export function getTasksByProjectId(projectId) {
-  return getTasks().filter(
-    (task) => task.project_id === projectId
-  );
+  return getTasks().filter((task) => task.project_id === projectId);
+}
+
+export function getFilteredTasksByProjectId(projectId) {
+  const statusFilter = getTaskStatusFilter();
+  const priorityFilter = getTaskPriorityFilter();
+
+  return getTasks()
+    .filter((task) => task.project_id === projectId)
+    .filter((task) => {
+      if (!statusFilter) {
+        return true;
+      }
+
+      return task.status === statusFilter;
+    })
+    .filter((task) => {
+      if (!priorityFilter) {
+        return true;
+      }
+
+      return task.priority === priorityFilter;
+    });
 }
 
 export function getTaskById(taskId) {
-  return getTasks().find(
-    (task) => task.id === taskId
-  );
+  return getTasks().find((task) => task.id === taskId);
 }
 
 // ==================== CRUD ====================
@@ -41,13 +61,12 @@ export async function createTask(taskData) {
     throw new Error("Task title is required.");
   }
 
-  const createdTask =
-    await taskApi.createTask({
-      ...taskData,
-      title: taskData.title.trim(),
-      created_at: Date.now(),
-      updated_at: Date.now(),
-    });
+  const createdTask = await taskApi.createTask({
+    ...taskData,
+    title: taskData.title.trim(),
+    created_at: Date.now(),
+    updated_at: Date.now(),
+  });
 
   addTask(createdTask);
 
@@ -56,26 +75,20 @@ export async function createTask(taskData) {
   return createdTask;
 }
 
-export async function updateExistingTask(
-  taskId,
-  taskData
-) {
+export async function updateExistingTask(taskId, taskData) {
   const existingTask = getTaskById(taskId);
 
   if (!existingTask) {
     throw new Error("Task not found.");
   }
 
-  const updatedTask =
-    await taskApi.updateTask(taskId, {
-      ...existingTask,
-      ...taskData,
-      title:
-        taskData.title?.trim() ??
-        existingTask.title,
-      created_at: existingTask.created_at,
+  const updatedTask = await taskApi.updateTask(taskId, {
+    ...existingTask,
+    ...taskData,
+    title: taskData.title?.trim() ?? existingTask.title,
+    created_at: existingTask.created_at,
     updated_at: new Date().toISOString(),
-    });
+  });
 
   updateTaskState(updatedTask);
 

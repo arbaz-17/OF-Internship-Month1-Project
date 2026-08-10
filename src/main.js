@@ -4,6 +4,8 @@ import {
   getSelectedProjectId,
   getLoading,
   getError,
+  getTaskStatusFilter,
+  getTaskPriorityFilter,
   setLoading,
   setError,
   clearError,
@@ -11,7 +13,10 @@ import {
 
 import { getFilteredProjects } from "./services/projectService.js";
 
-import { getTasksByProjectId } from "./services/taskService.js";
+import {
+  getTasksByProjectId,
+  getFilteredTasksByProjectId,
+} from "./services/taskService.js";
 
 import { renderProjects } from "./ui/projectRenderer.js";
 
@@ -33,6 +38,8 @@ import { initializeProjectSearchForm } from "./forms/projectSearchForm.js";
 
 import { initializeProjectFilterForm } from "./forms/projectFilterForm.js";
 
+import { initializeTaskFilterForm } from "./forms/taskFilterForm.js";
+
 import { initializeModal, bindModalButtons } from "./ui/modal.js";
 
 import { initializeConfirmModal } from "./ui/confirmModal.js";
@@ -53,6 +60,7 @@ function renderApplication() {
   /*
    * Loading
    */
+
   if (getLoading()) {
     renderLoadingState();
     renderProjectDetails(null);
@@ -63,9 +71,9 @@ function renderApplication() {
   /*
    * Error
    */
+
   if (getError()) {
     renderErrorState(getError());
-
     renderProjectDetails(null);
 
     return;
@@ -74,14 +82,15 @@ function renderApplication() {
   /*
    * Filtered projects
    */
+
   const projects = getFilteredProjects();
 
   /*
    * No projects
    */
+
   if (projects.length === 0) {
     renderNoProjectsState();
-
     renderProjectDetails(null);
 
     return;
@@ -92,26 +101,36 @@ function renderApplication() {
    * a project that is currently visible
    * in the sidebar.
    */
+
   const selectedProject =
     projects.find((project) => project.id === getSelectedProjectId()) ?? null;
 
   /*
    * Sidebar
    */
+
   renderProjects(projects, selectedProject?.id ?? null, selectProject);
 
   /*
    * Dashboard
    */
+
   renderProjectDetails(selectedProject);
 
   /*
    * Tasks
    */
-  if (selectedProject) {
-    const tasks = getTasksByProjectId(selectedProject.id);
 
-    renderTasks(tasks);
+  if (selectedProject) {
+    const tasks = getFilteredTasksByProjectId(selectedProject.id);
+
+    const hasTaskFilters = Boolean(
+      getTaskStatusFilter() || getTaskPriorityFilter(),
+    );
+
+    renderTasks(tasks, {
+      isFiltered: hasTaskFilters,
+    });
   }
 }
 
@@ -123,7 +142,6 @@ function loadCachedWorkspace() {
   }
 
   setProjects(workspace.projects);
-
   setTasks(workspace.tasks);
 
   return true;
@@ -136,7 +154,6 @@ async function fetchLatestWorkspace() {
   ]);
 
   setProjects(projects);
-
   setTasks(tasks);
 
   storageService.saveWorkspace({
@@ -154,7 +171,6 @@ async function initializeWorkspace() {
     renderApplication();
   } else {
     setLoading(true);
-
     renderApplication();
   }
 
@@ -170,7 +186,6 @@ async function initializeWorkspace() {
     }
   } finally {
     setLoading(false);
-
     renderApplication();
   }
 }
@@ -186,6 +201,8 @@ async function initializeApplication() {
 
   initializeProjectFilterForm();
 
+  initializeTaskFilterForm(renderApplication);
+
   initializeTaskAccordion();
 
   initializeModal("project-modal");
@@ -199,6 +216,7 @@ async function initializeApplication() {
   /*
    * Project events
    */
+
   eventBus.subscribe(EVENTS.PROJECT_SELECTED, renderApplication);
 
   eventBus.subscribe(EVENTS.PROJECT_UPDATED, renderApplication);
@@ -210,6 +228,7 @@ async function initializeApplication() {
   /*
    * Task events
    */
+
   eventBus.subscribe(EVENTS.TASK_CREATED, renderApplication);
 
   eventBus.subscribe(EVENTS.TASK_UPDATED, renderApplication);

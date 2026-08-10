@@ -34,7 +34,7 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-export function renderTasks(tasks) {
+export function renderTasks(tasks, { isFiltered = false } = {}) {
   const selectedProjectId = getSelectedProjectId();
 
   if (!selectedProjectId) return;
@@ -46,6 +46,32 @@ export function renderTasks(tasks) {
   container.innerHTML = "";
 
   if (tasks.length === 0) {
+    if (isFiltered) {
+      container.innerHTML = `
+        <div class="empty-tasks">
+
+          <div
+            class="empty-tasks-icon"
+            aria-hidden="true"
+          >
+            ◌
+          </div>
+
+          <h3>
+            No matching tasks
+          </h3>
+
+          <p>
+            No tasks match the selected filters.
+            Try adjusting or resetting your filters.
+          </p>
+
+        </div>
+      `;
+
+      return;
+    }
+
     container.innerHTML = `
       <div class="empty-tasks">
 
@@ -97,7 +123,6 @@ export function renderTasks(tasks) {
               ${escapeHtml(task.title)}
             </span>
 
-
             <span class="task-summary">
 
               <span
@@ -109,7 +134,6 @@ export function renderTasks(tasks) {
               >
                 ${escapeHtml(formatLabel(task.status))}
               </span>
-
 
               <span
                 class="
@@ -126,7 +150,6 @@ export function renderTasks(tasks) {
 
           </span>
 
-
           <span
             class="task-chevron"
             aria-hidden="true"
@@ -137,7 +160,6 @@ export function renderTasks(tasks) {
         </button>
 
       </div>
-
 
       <div
         id="task-details-${escapeHtml(task.id)}"
@@ -159,7 +181,6 @@ export function renderTasks(tasks) {
 
           </div>
 
-
           <div class="task-meta-grid">
 
             <div class="task-meta-item">
@@ -174,7 +195,6 @@ export function renderTasks(tasks) {
 
             </div>
 
-
             <div class="task-meta-item">
 
               <span class="task-detail-label">
@@ -186,7 +206,6 @@ export function renderTasks(tasks) {
               </strong>
 
             </div>
-
 
             <div class="task-meta-item">
 
@@ -200,7 +219,6 @@ export function renderTasks(tasks) {
 
             </div>
 
-
             <div class="task-meta-item">
 
               <span class="task-detail-label">
@@ -212,7 +230,6 @@ export function renderTasks(tasks) {
               </strong>
 
             </div>
-
 
             <div class="task-meta-item">
 
@@ -230,7 +247,6 @@ export function renderTasks(tasks) {
 
         </div>
 
-
         <div class="task-card-actions">
 
           <button
@@ -240,7 +256,6 @@ export function renderTasks(tasks) {
           >
             Edit Task
           </button>
-
 
           <button
             type="button"

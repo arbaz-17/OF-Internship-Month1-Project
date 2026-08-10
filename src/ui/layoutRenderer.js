@@ -1,3 +1,9 @@
+import {
+  getTaskStatusFilter,
+  getTaskPriorityFilter,
+} from "../state/appState.js";
+
+
 function formatDate(date) {
   if (!date) return "N/A";
 
@@ -19,7 +25,11 @@ function formatLabel(value) {
 
   return String(value)
     .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .map(
+      (part) =>
+        part.charAt(0).toUpperCase() +
+        part.slice(1)
+    )
     .join(" ");
 }
 
@@ -33,13 +43,15 @@ function escapeHtml(value) {
 }
 
 export function renderProjectDetails(project) {
-  const container = document.getElementById("dashboard-main");
+  const container =
+    document.getElementById("dashboard-main");
 
   if (!container) return;
 
   /*
    * No selected project
    */
+
   if (!project) {
     container.innerHTML = `
       <section class="dashboard-empty-state">
@@ -48,7 +60,7 @@ export function renderProjectDetails(project) {
           class="dashboard-empty-icon"
           aria-hidden="true"
         >
-          +
+          ↖
         </div>
 
         <p class="dashboard-empty-eyebrow">
@@ -60,8 +72,8 @@ export function renderProjectDetails(project) {
         </h2>
 
         <p>
-          Choose a project from the sidebar
-          to view its details and tasks.
+          Choose a project from the sidebar to view
+          its details and tasks.
         </p>
 
       </section>
@@ -73,9 +85,13 @@ export function renderProjectDetails(project) {
   /*
    * Selected project
    */
+
   const priority = project.priority || "medium";
 
-  container.innerHTML = `
+const taskStatusFilter = getTaskStatusFilter();
+const taskPriorityFilter = getTaskPriorityFilter();
+
+container.innerHTML = `
     <section class="project-overview">
 
       <div class="project-overview-header">
@@ -83,7 +99,9 @@ export function renderProjectDetails(project) {
         <div class="project-overview-heading">
 
           <p class="project-overview-category">
-            ${escapeHtml(formatLabel(project.category))}
+            ${escapeHtml(
+              formatLabel(project.category)
+            )}
           </p>
 
           <h2>
@@ -91,17 +109,19 @@ export function renderProjectDetails(project) {
           </h2>
 
           <p class="project-overview-description">
-            ${escapeHtml(project.description || "No description provided.")}
+            ${escapeHtml(
+              project.description ||
+                "No description provided."
+            )}
           </p>
 
         </div>
-
 
         <div class="project-overview-actions">
 
           <button
             type="button"
-            class="edit-project-btn"
+            class="secondary-btn edit-project-btn"
             data-project-id="${escapeHtml(project.id)}"
           >
             Edit Project
@@ -109,7 +129,7 @@ export function renderProjectDetails(project) {
 
           <button
             type="button"
-            class="delete-project-btn"
+            class="danger-btn delete-project-btn"
             data-project-id="${escapeHtml(project.id)}"
           >
             Delete
@@ -119,11 +139,12 @@ export function renderProjectDetails(project) {
 
       </div>
 
-
       <div class="project-overview-badges">
 
         <span class="badge badge-status">
-          ${escapeHtml(formatLabel(project.status))}
+          ${escapeHtml(
+            formatLabel(project.status)
+          )}
         </span>
 
         <span
@@ -133,12 +154,13 @@ export function renderProjectDetails(project) {
             priority-${escapeHtml(priority)}
           "
         >
-          ${escapeHtml(formatLabel(priority))}
+          ${escapeHtml(
+            formatLabel(priority)
+          )}
           Priority
         </span>
 
       </div>
-
 
       <div class="project-details-grid">
 
@@ -154,7 +176,6 @@ export function renderProjectDetails(project) {
 
         </div>
 
-
         <div class="project-detail-item">
 
           <span class="meta-label">
@@ -167,7 +188,6 @@ export function renderProjectDetails(project) {
 
         </div>
 
-
         <div class="project-detail-item">
 
           <span class="meta-label">
@@ -179,7 +199,6 @@ export function renderProjectDetails(project) {
           </strong>
 
         </div>
-
 
         <div class="project-detail-item">
 
@@ -197,7 +216,6 @@ export function renderProjectDetails(project) {
 
     </section>
 
-
     <section class="tasks-section">
 
       <div class="tasks-section-heading">
@@ -214,17 +232,7 @@ export function renderProjectDetails(project) {
 
         </div>
 
-
         <div class="tasks-section-actions">
-
-          <button
-            type="button"
-            class="secondary-btn"
-            disabled
-            title="Task filters will be added later"
-          >
-            Filter
-          </button>
 
           <button
             type="button"
@@ -238,6 +246,93 @@ export function renderProjectDetails(project) {
 
       </div>
 
+      <div class="task-filters">
+
+        <div class="task-filter-group">
+
+          <label for="task-status-filter">
+            Status
+          </label>
+
+<select id="task-status-filter">
+  <option
+    value=""
+    ${taskStatusFilter === "" ? "selected" : ""}
+  >
+    All Statuses
+  </option>
+
+  <option
+    value="todo"
+    ${taskStatusFilter === "todo" ? "selected" : ""}
+  >
+    Todo
+  </option>
+
+  <option
+    value="in-progress"
+    ${taskStatusFilter === "in-progress" ? "selected" : ""}
+  >
+    In Progress
+  </option>
+
+  <option
+    value="done"
+    ${taskStatusFilter === "done" ? "selected" : ""}
+  >
+    Done
+  </option>
+</select>
+
+        </div>
+
+        <div class="task-filter-group">
+
+          <label for="task-priority-filter">
+            Priority
+          </label>
+
+<select id="task-priority-filter">
+  <option
+    value=""
+    ${taskPriorityFilter === "" ? "selected" : ""}
+  >
+    All Priorities
+  </option>
+
+  <option
+    value="low"
+    ${taskPriorityFilter === "low" ? "selected" : ""}
+  >
+    Low
+  </option>
+
+  <option
+    value="medium"
+    ${taskPriorityFilter === "medium" ? "selected" : ""}
+  >
+    Medium
+  </option>
+
+  <option
+    value="high"
+    ${taskPriorityFilter === "high" ? "selected" : ""}
+  >
+    High
+  </option>
+</select>
+
+        </div>
+
+        <button
+          type="button"
+          id="reset-task-filters"
+          class="secondary-btn"
+        >
+          Reset Filters
+        </button>
+
+      </div>
 
       <div
         class="project-tasks-container"
