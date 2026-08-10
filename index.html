@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Project Management System</title>
 
     <!-- Split CSS Files -->
@@ -15,131 +16,223 @@
   </head>
 
   <body>
-    <!-- Header -->
+    <!-- ==========================
+         Top Bar
+    =========================== -->
     <header class="app-header">
       <div class="header-content">
-        <h1 class="app-title">OptimusFox - PMS</h1>
+        <div class="brand-block">
+          <div class="brand-mark">OF</div>
+
+          <div>
+            <h1 class="brand-name">OptimusFox - PMS</h1>
+
+            <p class="brand-subtitle">Project Management System</p>
+          </div>
+        </div>
 
         <div class="header-actions">
-          <div class="search-wrapper">
-            <input
-              type="search"
-              id="project-search"
-              placeholder="Search projects..."
-            />
-
-            <button
-              type="button"
-              id="clear-project-search"
-              aria-label="Clear search"
-            >
-              ✕
-            </button>
-          </div>
-
           <button type="button" id="open-project-modal" class="primary-btn">
-            Add Project
+            + Add Project
           </button>
         </div>
       </div>
     </header>
 
-    <!-- Filters -->
-    <section class="filters-bar">
-      <div class="filters">
-        <select id="project-status-filter">
-          <option value="">All Statuses</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-          <option value="on-hold">On Hold</option>
-        </select>
+    <!-- ==========================
+         Application Shell
+    =========================== -->
+    <main class="app-shell">
+      <!-- ==========================
+           Sidebar
+      =========================== -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <p class="sidebar-eyebrow">Workspace</p>
 
-        <select id="project-priority-filter">
-          <option value="">All Priorities</option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
+          <h2>Projects</h2>
+        </div>
 
-        <button type="button" id="reset-project-filters" class="secondary-btn">
-          Reset Filters
-        </button>
+        <!-- Project Search -->
+        <div class="sidebar-search">
+          <div class="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+
+            <input
+              type="search"
+              id="project-search"
+              placeholder="Search projects..."
+              autocomplete="off"
+            />
+
+            <button
+              type="button"
+              id="clear-project-search"
+              aria-label="Clear project search"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Project Filters -->
+        <section class="sidebar-filter-section">
+          <div class="sidebar-section-heading">
+            <span> Filters </span>
+
+            <button type="button" id="reset-project-filters" class="text-btn">
+              Reset
+            </button>
+          </div>
+
+          <div class="sidebar-filters">
+            <select id="project-status-filter">
+              <option value="">All Statuses</option>
+
+              <option value="active">Active</option>
+
+              <option value="completed">Completed</option>
+
+              <option value="on-hold">On Hold</option>
+            </select>
+
+            <select id="project-priority-filter">
+              <option value="">All Priorities</option>
+
+              <option value="low">Low</option>
+
+              <option value="medium">Medium</option>
+
+              <option value="high">High</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Project List -->
+        <div class="sidebar-projects-header">
+          <span> All Projects </span>
+
+          <span id="project-count" class="project-count"> 0 </span>
+        </div>
+
+        <section id="project-list" class="project-list"></section>
+      </aside>
+
+      <!-- ==========================
+           Dashboard
+      =========================== -->
+      <section class="dashboard">
+        <div id="dashboard-main" class="dashboard-main"></div>
+      </section>
+    </main>
+
+    <!-- ==========================
+         Project Modal
+    =========================== -->
+    <section class="modal project-modal" id="project-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Project Details</h2>
+
+          <button type="button" id="close-project-modal" class="modal-close">
+            ✕
+          </button>
+        </div>
+
+        <form id="project-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="project-name"> Name </label>
+
+              <input
+                id="project-name"
+                placeholder="Ex. OptimusFox Portal"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="project-category"> Category </label>
+
+              <select id="project-category">
+                <option value="software-development">
+                  Software Development
+                </option>
+
+                <option value="marketing-campaign">Marketing Campaign</option>
+
+                <option value="internal-operations">Internal Operations</option>
+
+                <option value="client-deliverable">Client Deliverable</option>
+
+                <option value="testing">Testing</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="project-description"> Description </label>
+
+            <textarea
+              id="project-description"
+              placeholder="Add description about the project..."
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="project-status"> Status </label>
+
+              <select id="project-status">
+                <option value="active">Active</option>
+
+                <option value="completed">Completed</option>
+
+                <option value="on-hold">On Hold</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="project-priority"> Priority </label>
+
+              <select id="project-priority">
+                <option value="low">Low</option>
+
+                <option value="medium" selected>Medium</option>
+
+                <option value="high">High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="project-start-date"> Start Date </label>
+
+              <input type="date" id="project-start-date" />
+            </div>
+
+            <div class="form-group">
+              <label for="project-due-date"> Due Date </label>
+
+              <input type="date" id="project-due-date" />
+            </div>
+          </div>
+
+          <button id="project-submit-btn" type="submit" class="primary-btn">
+            Create Project
+          </button>
+        </form>
       </div>
     </section>
 
-    <!-- Workspace -->
-    <main class="workspace">
-      <section id="project-list" class="project-list"></section>
-    </main>
-
-    <!-- Project Modal -->
-    <section class="modal project-modal" id="project-modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Project Details</h2>
-      <button type="button" id="close-project-modal" class="modal-close">
-        ✕
-      </button>
-    </div>
-    <form id="project-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="project-name">Name</label>
-          <input id="project-name" placeholder="Ex. OptimusFox Portal" required/>
-        </div>
-        <div class="form-group">
-          <label for="project-category">Category</label>
-          <select id="project-category">
-            <option value="software-development">Software Development</option>
-            <option value="marketing-campaign">Marketing Campaign</option>
-            <option value="internal-operations">Internal Operations</option>
-            <option value="client-deliverable">Client Deliverable</option>
-            <option value="testing">Testing</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="project-description">Description</label>
-        <textarea id="project-description" placeholder="Add description about the project..."></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="project-status">Status</label>
-          <select id="project-status">
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-            <option value="on-hold">On Hold</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="project-priority">Priority</label>
-          <select id="project-priority">
-            <option value="low">Low</option>
-            <option value="medium" selected>Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="project-start-date">Start Date</label>
-          <input type="date" id="project-start-date" />
-        </div>
-        <div class="form-group">
-          <label for="project-due-date">Due Date</label>
-          <input type="date" id="project-due-date"/>
-        </div>
-      </div>
-
-      <button id="project-submit-btn" type="submit" class="primary-btn">
-        Create Project
-      </button>
-      
-    </form>
-  </div>
-</section>
-
-    <!-- Task Modal -->
+    <!-- ==========================
+         Task Modal
+    =========================== -->
     <section class="modal task-modal" id="task-modal">
       <div class="modal-content">
         <div class="modal-header">
@@ -160,25 +253,33 @@
 
           <textarea id="task-description" placeholder="Description"></textarea>
 
-          <label for="task-status">Status</label>
+          <label for="task-status"> Status </label>
+
           <select id="task-status">
             <option value="todo">Todo</option>
+
             <option value="in-progress">In Progress</option>
+
             <option value="done">Done</option>
           </select>
 
-          <label for="task-priority">Priority</label>
+          <label for="task-priority"> Priority </label>
+
           <select id="task-priority">
             <option value="low">Low</option>
+
             <option value="medium">Medium</option>
+
             <option value="high">High</option>
           </select>
 
-          <label for="task-start-date">Start Date</label>
+          <label for="task-start-date"> Start Date </label>
+
           <input type="date" id="task-start-date" />
 
-          <label for="task-due-date">Due Date</label>
-          <input type="date" id="task-due-date"/>
+          <label for="task-due-date"> Due Date </label>
+
+          <input type="date" id="task-due-date" />
 
           <div class="form-actions">
             <button id="task-submit-btn" type="submit" class="primary-btn">
@@ -189,6 +290,9 @@
       </div>
     </section>
 
+    <!-- ==========================
+         Confirmation Modal
+    =========================== -->
     <section id="confirm-modal" class="modal">
       <div class="modal-content confirm-modal-content">
         <div class="modal-header">
@@ -212,6 +316,7 @@
         </div>
       </div>
     </section>
+
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>

@@ -1,215 +1,492 @@
 /* ==========================
-   Project List & Cards
+   Sidebar Project Navigation
 ========================== */
+
 .project-list {
-  display: grid;
-  gap: 1rem;
-}
-
-.project-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  transition: var(--transition);
-}
-
-.project-card:hover {
-  border-color: var(--color-border-hover);
-  background: #212124; /* Subtle highlight on dark */
-}
-
-.project-card.active {
-  border-color: var(--color-primary);
-}
-
-/* --- Updated Header Layout --- */
-.project-card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center; /* Vertically centers the arrow with the left content */
-  cursor: pointer;
-}
 
-/* Groups the title and badges on the left side */
-/* Groups the title and badges and stacks them vertically */
-.header-main-content {
-  display: flex;
-  flex-direction: column; /* This forces the badges under the title */
-  align-items: flex-start;
-  gap: 0.75rem; /* Controls the space between the title and the badges */
-}
-
-.project-heading {
-  display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+
+  gap: 3px;
 }
 
-.project-title {
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  color: var(--color-text);
-}
+.project-nav-item {
+  width: 100%;
 
-.project-category {
-  color: var(--color-primary); /* Use orange for the category */
-  font-size: var(--fs-xs);
-}
-
-.project-badges {
   display: flex;
-  gap: 0.4rem;
-  /* Removed top-margin so they sit inline with the title grouping */
-}
 
-/* --- New SVG Expand Icon Wrapper --- */
-.expand-icon-wrapper {
-  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--color-border); /* Subtle dark circle background */
-  transition: var(--transition);
-  flex-shrink: 0; /* Prevents squishing on small mobile screens */
+
+  gap: 10px;
+
+  padding:
+    10px 8px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--radius-sm);
+
+  background:
+    transparent;
+
+  color:
+    var(--color-text-muted);
+
+  text-align:
+    left;
 }
 
-.project-card:hover .expand-icon-wrapper {
-  background: var(--color-border-hover);
+.project-nav-item:hover {
+  background:
+    var(--color-surface);
+
+  color:
+    var(--color-text);
 }
 
-.expand-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--color-text-muted);
-  transition: transform 0.3s ease, color 0.3s ease;
+.project-nav-item.active {
+  background:
+    rgba(249, 115, 22, 0.09);
+
+  border-color:
+    rgba(249, 115, 22, 0.18);
+
+  color:
+    var(--color-text);
 }
 
-.project-card.active .expand-icon-wrapper {
-  background: rgba(249, 115, 22, 0.15); /* Orange tinted circle when active */
+.project-nav-indicator {
+  width: 6px;
+  height: 6px;
+
+  flex:
+    0 0 6px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--color-border-hover);
 }
 
-.project-card.active .expand-icon {
-  transform: rotate(180deg);
-  color: var(--color-primary); /* Orange arrow */
+.project-nav-item.active
+.project-nav-indicator {
+  background:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 8px
+    rgba(249, 115, 22, 0.35);
 }
 
-/* --- Project Content & Actions --- */
-.project-description {
-  color: var(--color-text-muted);
-  font-size: var(--fs-sm);
-  margin: 1rem 0;
+.project-nav-name {
+  min-width:
+    0;
+
+  overflow:
+    hidden;
+
+  color:
+    inherit;
+
+  font-size:
+    var(--fs-sm);
+
+  font-weight:
+    500;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
 }
 
-.project-card-meta {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(140px, 1fr));
-  gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+.empty-projects-sidebar {
+  padding:
+    20px 8px;
+
+  color:
+    var(--color-text-muted);
+
+  font-size:
+    var(--fs-sm);
+
+  text-align:
+    center;
 }
 
-.project-meta-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.meta-label {
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  font-weight: 500;
-}
-
-.meta-value {
-  font-size: var(--fs-sm);
-  color: var(--color-text);
-}
 
 /* ==========================
-   Section Headers
+   Selected Project Overview
 ========================== */
 
-.project-section-header,
-.tasks-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-border);
+.project-overview {
+  padding:
+    28px;
+
+  background:
+    var(--color-surface);
+
+  border:
+    1px solid
+    var(--color-border);
+
+  border-radius:
+    var(--radius-lg);
 }
 
-.project-section-header h3,
-.tasks-section-header h3 {
-  margin: 0;
-  font-size: var(--fs-md);
-  font-weight: 600;
-  color: var(--color-text);
+.project-overview-header {
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    24px;
 }
 
-.project-actions-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.project-overview-heading {
+  min-width:
+    0;
 }
 
-.tasks-section-header {
-  margin-bottom: 1.25rem;
+.project-overview-heading h2 {
+  margin-top:
+    5px;
+
+  color:
+    var(--color-text);
+
+  font-size:
+    clamp(1.5rem, 2.4vw, 2rem);
+
+  font-weight:
+    600;
+
+  line-height:
+    1.2;
 }
+
+.project-overview-description {
+  max-width:
+    760px;
+
+  margin-top:
+    12px;
+
+  color:
+    var(--color-text-muted);
+
+  font-size:
+    var(--fs-sm);
+
+  line-height:
+    1.7;
+}
+
 
 /* ==========================
-   Project Action Buttons
+   Project Actions
 ========================== */
 
-.project-section-header button,
-.tasks-section-header button {
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  transition: var(--transition);
-  border: 1px solid transparent;
+.project-overview-actions {
+  display:
+    flex;
+
+  flex-shrink:
+    0;
+
+  gap:
+    8px;
 }
 
-/* 1. Add Task (Primary Glowing Button) */
-.add-task-btn {
-  background: var(--color-primary);
-  color: #000000;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15); /* Subtle orange glow */
+.project-overview-actions .edit-project-btn,
+.project-overview-actions .delete-project-btn {
+  padding:
+    7px 12px;
+
+  border-radius:
+    var(--radius-sm);
+
+  font-size:
+    var(--fs-xs);
 }
 
-.add-task-btn:hover {
-  background: var(--color-primary-hover);
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-  transform: translateY(-1px);
+.project-overview-actions .edit-project-btn {
+  background:
+    transparent;
+
+  color:
+    var(--color-text);
+
+  border:
+    1px solid
+    var(--color-border);
 }
 
-.edit-project-btn {
-  background: #ffffff;
-  color: #111827;
-  border: 1px solid #ffffff;
-  font-weight: 600;
+.project-overview-actions .edit-project-btn:hover {
+  background:
+    var(--color-border);
+
+  border-color:
+    var(--color-border-hover);
 }
 
-.edit-project-btn:hover {
-  background: #f3f4f6;
-  border-color: #f3f4f6;
-  transform: translateY(-1px);
+.project-overview-actions .delete-project-btn {
+  background:
+    transparent;
+
+  color:
+    var(--color-danger);
+
+  border:
+    1px solid
+    rgba(239, 68, 68, 0.35);
 }
 
-.delete-project-btn {
-  background: var(--color-danger);
-  color: #ffffff;
-  border: 1px solid var(--color-danger);
-  font-weight: 600;
+.project-overview-actions .delete-project-btn:hover {
+  background:
+    rgba(239, 68, 68, 0.1);
+
+  border-color:
+    var(--color-danger);
 }
 
-.delete-project-btn:hover {
-  background: #dc2626;
-  border-color: #dc2626;
-  transform: translateY(-1px);
+
+/* ==========================
+   Project Badges
+========================== */
+
+.project-overview-badges {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    7px;
+
+  margin-top:
+    20px;
+}
+
+
+/* ==========================
+   Project Metadata
+========================== */
+
+.project-details-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  margin-top:
+    24px;
+
+  padding-top:
+    18px;
+
+  border-top:
+    1px solid
+    var(--color-border);
+}
+
+.project-detail-item {
+  min-width:
+    0;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    5px;
+
+  padding-right:
+    18px;
+}
+
+.project-detail-item
++ .project-detail-item {
+  padding-left:
+    18px;
+
+  border-left:
+    1px solid
+    var(--color-border);
+}
+
+.project-detail-item strong {
+  color:
+    var(--color-text);
+
+  font-size:
+    var(--fs-sm);
+
+  font-weight:
+    500;
+}
+
+
+/* ==========================
+   Tasks Section
+========================== */
+
+.tasks-section {
+  margin-top:
+    34px;
+}
+
+.tasks-section-heading {
+  display:
+    flex;
+
+  align-items:
+    flex-end;
+
+  justify-content:
+    space-between;
+
+  gap:
+    16px;
+
+  padding-bottom:
+    14px;
+
+  border-bottom:
+    1px solid
+    var(--color-border);
+}
+
+.tasks-section-heading h2 {
+  margin-top:
+    3px;
+
+  color:
+    var(--color-text);
+
+  font-size:
+    var(--fs-xl);
+
+  font-weight:
+    600;
+}
+
+.tasks-section-actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+}
+
+.tasks-section-actions button:disabled {
+  opacity:
+    0.45;
+}
+
+
+/* ==========================
+   Responsive
+========================== */
+
+@media (max-width: 800px) {
+
+  .project-overview-header,
+  .tasks-section-heading {
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+  }
+
+  .project-overview-actions,
+  .tasks-section-actions {
+    width:
+      100%;
+  }
+
+  .project-overview-actions button,
+  .tasks-section-actions button {
+    flex:
+      1;
+  }
+
+  .project-details-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .project-detail-item
+  + .project-detail-item {
+    padding-left:
+      0;
+
+    border-left:
+      none;
+  }
+
+  .project-detail-item:nth-child(even) {
+    padding-left:
+      18px;
+
+    border-left:
+      1px solid
+      var(--color-border);
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .project-overview {
+    padding:
+      20px;
+  }
+
+  .project-details-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .project-detail-item,
+  .project-detail-item:nth-child(even) {
+    padding-left:
+      0;
+
+    padding-right:
+      0;
+
+    border-left:
+      none;
+  }
+
+  .project-detail-item
+  + .project-detail-item {
+    padding-top:
+      14px;
+
+    border-top:
+      1px solid
+      var(--color-border);
+  }
+
 }
