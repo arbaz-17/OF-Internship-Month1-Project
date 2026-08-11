@@ -1,16 +1,10 @@
-const BASE_URL =
-  "https://6a71cc9ef687776c13f0aa20.mockapi.io/pms-api";
+const BASE_URL = "https://6a71cc9ef687776c13f0aa20.mockapi.io/pms-api";
 
 async function request(endpoint, options = {}) {
-  const response = await fetch(
-    `${BASE_URL}${endpoint}`,
-    options
-  );
+  const response = await fetch(`${BASE_URL}${endpoint}`, options);
 
   if (!response.ok) {
-    throw new Error(
-      `HTTP Error: ${response.status} ${response.statusText}`
-    );
+    throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
   }
 
   return await response.json();

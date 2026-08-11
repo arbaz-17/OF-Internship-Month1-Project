@@ -12,9 +12,7 @@ export function initializeTaskFilterForm(onFilterChange) {
 
     if (statusFilter) {
       setTaskStatusFilter(statusFilter.value);
-
       onFilterChange();
-
       return;
     }
 
@@ -22,7 +20,6 @@ export function initializeTaskFilterForm(onFilterChange) {
 
     if (priorityFilter) {
       setTaskPriorityFilter(priorityFilter.value);
-
       onFilterChange();
     }
   });
@@ -31,16 +28,13 @@ export function initializeTaskFilterForm(onFilterChange) {
     const resetButton = event.target.closest("#reset-task-filters");
 
     if (!resetButton) return;
-
     clearTaskFilters();
-
     onFilterChange();
   });
 }
 
 export function syncTaskFilterControls() {
   const statusFilter = document.getElementById("task-status-filter");
-
   const priorityFilter = document.getElementById("task-priority-filter");
 
   if (statusFilter) {

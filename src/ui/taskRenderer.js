@@ -3,9 +3,7 @@ import { escapeHtml, formatDate, formatLabel } from "../utils/helpers.js";
 
 export function renderTasks(tasks, { isFiltered = false } = {}) {
   const selectedProjectId = getSelectedProjectId();
-
   if (!selectedProjectId) return;
-
   const container = document.getElementById(`tasks-${selectedProjectId}`);
 
   if (!container) return;
@@ -35,7 +33,6 @@ export function renderTasks(tasks, { isFiltered = false } = {}) {
 
         </div>
       `;
-
       return;
     }
 
@@ -66,11 +63,8 @@ export function renderTasks(tasks, { isFiltered = false } = {}) {
 
   tasks.forEach((task) => {
     const card = document.createElement("article");
-
     card.className = "task-card";
-
     card.dataset.taskId = task.id;
-
     const priority = task.priority || "medium";
 
     card.innerHTML = `
@@ -246,21 +240,14 @@ export function initializeTaskAccordion() {
     const toggle = event.target.closest("[data-task-toggle]");
 
     if (!toggle) return;
-
     const taskId = toggle.dataset.taskToggle;
-
     const details = document.getElementById(`task-details-${taskId}`);
-
     const card = toggle.closest(".task-card");
 
     if (!details || !card) return;
-
     const isExpanded = toggle.getAttribute("aria-expanded") === "true";
-
     const nextExpanded = !isExpanded;
-
     toggle.setAttribute("aria-expanded", String(nextExpanded));
-
     details.hidden = !nextExpanded;
 
     card.classList.toggle("expanded", nextExpanded);

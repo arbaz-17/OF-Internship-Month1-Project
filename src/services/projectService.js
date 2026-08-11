@@ -15,7 +15,6 @@ import { projectApi } from "../api/projectApi.js";
 import { getTasksByProjectId } from "./taskService.js";
 import { taskApi } from "../api/taskApi.js";
 
-
 function persistCurrentState() {
   storageService.saveWorkspace({
     projects: getProjects(),
@@ -23,7 +22,7 @@ function persistCurrentState() {
   });
 }
 
-// ==================== Queries ====================
+//Queries
 
 export function getAllProjects() {
   return getProjects();
@@ -41,12 +40,14 @@ export function projectExists(projectId) {
   return getProjects().some((project) => project.id === projectId);
 }
 
-// ==================== CRUD ====================
+//CRUD
 
 export async function createProject(projectData) {
   if (!projectData.name?.trim()) {
     throw new Error("Project name is required.");
   }
+
+  const now = new Date().toISOString();
 
   const createdProject = await projectApi.createProject({
     ...projectData,
@@ -56,9 +57,7 @@ export async function createProject(projectData) {
   });
 
   addProject(createdProject);
-
   persistCurrentState();
-
   return createdProject;
 }
 
@@ -82,9 +81,7 @@ export async function updateExistingProject(projectId, projectData) {
   });
 
   updateProjectState(updatedProject);
-
   persistCurrentState();
-
   return updatedProject;
 }
 
@@ -94,31 +91,26 @@ export async function deleteExistingProject(projectId) {
   if (!existingProject) {
     throw new Error("Project not found.");
   }
-
   const projectTasks = getTasksByProjectId(projectId);
 
   for (const task of projectTasks) {
-  await taskApi.deleteTask(task.id);
-}
+    await taskApi.deleteTask(task.id);
+  }
 
   await projectApi.deleteProject(projectId);
 
   removeTasksByProjectId(projectId);
-
   removeProjectState(projectId);
-
   persistCurrentState();
-
   return existingProject;
 }
 
-// ==================== Search & Filters ====================
+//Search and Filters
 
 export function getFilteredProjects() {
   const searchQuery = getProjectSearchQuery().trim().toLowerCase();
 
   const statusFilter = getProjectStatusFilter();
-
   const priorityFilter = getProjectPriorityFilter();
 
   return getAllProjects().filter((project) => {
@@ -126,7 +118,6 @@ export function getFilteredProjects() {
       !searchQuery || project.name.toLowerCase().includes(searchQuery);
 
     const matchesStatus = !statusFilter || project.status === statusFilter;
-
     const matchesPriority =
       !priorityFilter || project.priority === priorityFilter;
 
