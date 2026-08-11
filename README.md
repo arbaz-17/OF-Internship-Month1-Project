@@ -251,7 +251,8 @@ After starting the server, open the provided local URL in a browser.
 
 ## 9. Demo
 
-**Live Demo:** Coming Soon
+[Project Management Application](https://arbaz-17.github.io/OF-Internship-Month1-Project/)
+
 
 
 
