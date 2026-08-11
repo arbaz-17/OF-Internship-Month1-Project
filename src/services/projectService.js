@@ -51,8 +51,8 @@ export async function createProject(projectData) {
   const createdProject = await projectApi.createProject({
     ...projectData,
     name: projectData.name.trim(),
-    created_at: Date.now(),
-    updated_at: Date.now(),
+    created_at: now,
+    updated_at: now,
   });
 
   addProject(createdProject);

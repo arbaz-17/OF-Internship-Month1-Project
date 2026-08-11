@@ -1,13 +1,22 @@
+import { escapeHtml } from "../utils/helpers.js";
+
 export function renderErrorState(errorMessage) {
   const container = document.getElementById("project-list");
 
+  if (!container) return;
+
   container.innerHTML = `
-    <section class="error-state">
+    <div
+      class="error-state"
+      role="alert"
+    >
+      <h2>
+        Unable to load workspace
+      </h2>
 
-      <h2>Unable to load workspace</h2>
-
-      <p>${errorMessage}</p>
-
-    </section>
+      <p>
+        ${escapeHtml(errorMessage)}
+      </p>
+    </div>
   `;
 }

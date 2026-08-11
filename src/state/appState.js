@@ -12,6 +12,9 @@ let projectSearchQuery = "";
 let projectStatusFilter = "";
 let projectPriorityFilter = "";
 
+let taskStatusFilter = "";
+let taskPriorityFilter = "";
+
 // ==================== Projects ====================
 
 export function getProjects() {
@@ -28,23 +31,18 @@ export function addProject(project) {
 
 export function updateProjectState(updatedProject) {
   projects = projects.map((project) =>
-    project.id === updatedProject.id
-      ? updatedProject
-      : project
+    project.id === updatedProject.id ? updatedProject : project,
   );
 }
 
 export function removeProjectState(projectId) {
-  projects = projects.filter(
-    (project) => project.id !== projectId
-  );
+  projects = projects.filter((project) => project.id !== projectId);
 }
 
 // ==================== Tasks ====================
 
 export function getTasks() {
   return tasks;
-  console.log("Current Tasks: ",getTasks())
 }
 
 export function setTasks(newTasks) {
@@ -57,24 +55,16 @@ export function addTask(task) {
 
 export function updateTaskState(updatedTask) {
   tasks = tasks.map((task) =>
-    task.id === updatedTask.id
-      ? updatedTask
-      : task
+    task.id === updatedTask.id ? updatedTask : task,
   );
 }
 
 export function removeTaskState(taskId) {
-  tasks = tasks.filter(
-    (task) => task.id !== taskId
-  );
+  tasks = tasks.filter((task) => task.id !== taskId);
 }
 
 export function removeTasksByProjectId(projectId) {
-
-  tasks = tasks.filter((task) => {
-    return task.project_id !== projectId;
-  });
-
+  tasks = tasks.filter((task) => task.project_id !== projectId);
 }
 
 // ==================== Selected Project ====================
@@ -101,7 +91,6 @@ export function clearEditingProjectId() {
   editingProjectId = null;
 }
 
-
 // ==================== UI States ====================
 
 export function getLoading() {
@@ -124,7 +113,6 @@ export function clearError() {
   error = null;
 }
 
-
 // ==================== Project Search ====================
 
 export function getProjectSearchQuery() {
@@ -138,7 +126,6 @@ export function setProjectSearchQuery(query) {
 export function clearProjectSearchQuery() {
   projectSearchQuery = "";
 }
-
 
 // ==================== Project Filters ====================
 
@@ -168,4 +155,41 @@ export function setProjectPriorityFilter(priority) {
 
 export function clearProjectPriorityFilter() {
   projectPriorityFilter = "";
+}
+
+// ==================== Task Filters ====================
+
+// Status Filter
+
+export function getTaskStatusFilter() {
+  return taskStatusFilter;
+}
+
+export function setTaskStatusFilter(status) {
+  taskStatusFilter = status;
+}
+
+export function clearTaskStatusFilter() {
+  taskStatusFilter = "";
+}
+
+// Priority Filter
+
+export function getTaskPriorityFilter() {
+  return taskPriorityFilter;
+}
+
+export function setTaskPriorityFilter(priority) {
+  taskPriorityFilter = priority;
+}
+
+export function clearTaskPriorityFilter() {
+  taskPriorityFilter = "";
+}
+
+// Reset All Task Filters
+
+export function clearTaskFilters() {
+  taskStatusFilter = "";
+  taskPriorityFilter = "";
 }

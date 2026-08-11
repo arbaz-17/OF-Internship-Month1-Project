@@ -1,21 +1,40 @@
 /* ==========================
-   Reusable Components
+Reusable Components
 ========================== */
+
 button {
   cursor: pointer;
+
   border: none;
+
   transition: var(--transition);
+
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   font-weight: 500;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ==========================
+Primary Button
+========================== */
+
 .primary-btn {
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.85rem;
+
   border-radius: var(--radius-sm);
+
   background: var(--color-primary);
-  color: #000000; /* Black text on orange for high contrast */
+
+  color: #000000;
+
   font-weight: 600;
 }
 
@@ -23,81 +42,140 @@ button {
   background: var(--color-primary-hover);
 }
 
+/* ==========================
+Secondary Button
+========================== */
+
 .secondary-btn {
-  padding: 0.4rem 0.85rem;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--color-text);
+  padding: 0.45rem 0.85rem;
+
   border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-sm);
+
+  background: transparent;
+
+  color: var(--color-text);
 }
 
 .secondary-btn:hover {
-  background: #27272a; /* Dark hover state */
+  background: #27272a;
+
   border-color: var(--color-border-hover);
 }
 
-/* Badges (Dark Mode Adapations) */
-/* Badges (Dark Mode & Highlighted) */
+/* ==========================
+Danger Button
+========================== */
+
+.danger-btn {
+  padding: 0.45rem 0.85rem;
+
+  border: 1px solid var(--color-danger);
+
+  border-radius: var(--radius-sm);
+
+  background: var(--color-danger);
+
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+.danger-btn:hover {
+  background: #dc2626;
+
+  border-color: #dc2626;
+}
+
+/* ==========================
+Badges
+========================== */
+
 .badge {
   padding: 0.3rem 0.6rem;
+
+  border: 1px solid transparent;
+
   border-radius: var(--radius-sm);
+
   font-size: 0.7rem;
-  font-weight: 700; /* Made bolder */
+
+  font-weight: 700;
+
   line-height: 1;
-  text-transform: uppercase; /* Forces capital letters */
-  letter-spacing: 0.05em; /* Adds space between capitals for a cleaner look */
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
 }
 
 .badge-status {
-  background: #27272a; /* Dark gray */
+  background: #27272a;
+
   color: #fafafa;
-  border: 1px solid #52525b; /* Brighter border to stand out */
+
+  border-color: #52525b;
 }
 
 .badge-priority {
-  background: var(--color-primary); /* Solid Orange */
-  color: #000000; /* Black text for extreme contrast */
-  border: 1px solid var(--color-primary);
-  box-shadow: 0 0 8px rgba(249, 115, 22, 0.3); /* Subtle orange glow */
+  background: var(--color-primary);
+
+  color: #000000;
+
+  border-color: var(--color-primary);
 }
 
-/* --- Priority Badges (Solid Distinct Colors) --- */
+/* ==========================
+Priority Variants
+========================== */
 
-/* High Priority: Solid Bright Orange */
 .priority-high {
-  background: var(--color-primary); 
-  color: #000000; 
-  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+
+  color: #000000;
+
+  border-color: var(--color-primary);
 }
 
-/* Medium Priority: Solid Amber/Gold */
 .priority-medium {
-  background: #facc15; 
-  color: #000000; 
-  border: 1px solid #eab308;
+  background: #facc15;
+
+  color: #000000;
+
+  border-color: #eab308;
 }
 
-/* Low Priority: Solid Slate Gray */
 .priority-low {
-  background: #64748b; 
-  color: #ffffff; 
-  border: 1px solid #475569;
+  background: #64748b;
+
+  color: #ffffff;
+
+  border-color: #475569;
 }
 
-/* Empty States */
+/* ==========================
+Empty State
+========================== */
+
 .empty-state {
-  background: transparent;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
   padding: 3rem 2rem;
+
+  border: 1px dashed var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  background: transparent;
+
   text-align: center;
 }
 
-button.loading{
-    opacity:.75;
-    cursor:not-allowed;
-}
+/* ==========================
+Loading Buttons
+========================== */
 
-button:disabled{
-    cursor:not-allowed;
+button.loading {
+  opacity: 0.75;
+
+  cursor: not-allowed;
 }

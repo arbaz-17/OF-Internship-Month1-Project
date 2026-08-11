@@ -1,97 +1,523 @@
 /* ==========================
-   Layout 
+Application Layout
 ========================== */
+
 .app-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--color-background); /* Updated to match dark theme */
+
+  height: 68px;
+
+  background: rgba(9, 9, 11, 0.96);
+
   border-bottom: 1px solid var(--color-border);
+
+  backdrop-filter: blur(14px);
 }
 
 .header-content {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 16px 32px;
+  width: 100%;
+  height: 100%;
+
+  padding: 0 32px;
+
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: space-between;
+
+  gap: 20px;
 }
 
-.app-title {
-  font-size: var(--fs-lg);
-  font-weight: 600;
+.brand-block {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--radius-sm);
+
+  background: var(--color-primary);
+
+  color: #000;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.brand-name {
   color: var(--color-text);
+
+  font-size: 1.05rem;
+
+  font-weight: 600;
+
+  line-height: 1.1;
+}
+
+.brand-subtitle {
+  margin-top: 2px;
+
+  color: var(--color-text-muted);
+
+  font-size: var(--fs-xs);
 }
 
 .header-actions {
   display: flex;
+
   align-items: center;
-  gap: 0.75rem;
-  flex: 1;
-  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+/* ==========================
+Main Application Shell
+========================== */
+
+.app-shell {
+  min-height: calc(100vh - 68px);
+
+  display: grid;
+
+  grid-template-columns:
+    270px
+    minmax(0, 1fr);
+}
+
+/* ==========================
+Sidebar
+========================== */
+
+.sidebar {
+  position: sticky;
+  top: 68px;
+  height: calc(100vh - 68px);
+  overflow-y: auto;
+
+  /* Hide scrollbar */
+  scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-header {
+  padding: 0 8px;
+
+  margin-bottom: 18px;
+}
+
+.sidebar-eyebrow,
+.section-eyebrow,
+.project-overview-category {
+  color: var(--color-primary);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.sidebar-header h2 {
+  margin-top: 2px;
+
+  color: var(--color-text);
+
+  font-size: var(--fs-lg);
+
+  font-weight: 600;
+}
+
+/* ==========================
+Search
+========================== */
+
+.sidebar-search {
+  padding: 0 8px;
 }
 
 .search-wrapper {
   position: relative;
-  max-width: 240px;
+
   width: 100%;
 }
 
-#project-search {
-  padding-right: 24px;
+.sidebar-search input {
+  padding: 9px 32px 9px 34px;
+
+  background: var(--color-surface);
+}
+
+.search-icon {
+  position: absolute;
+
+  left: 11px;
+  top: 50%;
+
+  width: 15px;
+  height: 15px;
+
+  transform: translateY(-50%);
+
+  fill: none;
+
+  stroke: var(--color-text-muted);
+
+  stroke-width: 2;
+
+  pointer-events: none;
 }
 
 #clear-project-search {
   position: absolute;
+
   right: 8px;
   top: 50%;
+
+  width: 20px;
+  height: 20px;
+
+  padding: 0;
+
   transform: translateY(-50%);
-  background: none;
-  border: none;
+
+  background: transparent;
+
   color: var(--color-text-muted);
-  cursor: pointer;
-  font-size: 12px;
+
+  font-size: 10px;
 }
 
-.filters-bar {
-  max-width: 1000px;
-  margin: 1.5rem auto 0.5rem;
-  padding: 0 32px;
+#clear-project-search:hover {
+  color: var(--color-text);
 }
 
-.filters {
+/* ==========================
+Project Filters
+========================== */
+
+.sidebar-filter-section {
+  margin-top: 18px;
+
+  padding: 14px 8px;
+
+  border-top: 1px solid var(--color-border);
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-section-heading {
   display: flex;
-  gap: 0.75rem;
+
   align-items: center;
-  justify-content: center; /* Kept centered from previous request */
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  color: var(--color-text-muted);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
 }
 
-.filters select {
-  width: auto;
-  min-width: 120px;
+.sidebar-section-heading h3 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.text-btn {
+  padding: 0;
+
+  background: transparent;
+
+  color: var(--color-primary);
+
+  font-size: var(--fs-xs);
+}
+
+.text-btn:hover {
+  color: var(--color-primary-hover);
+}
+
+.sidebar-filters {
+  display: grid;
+
+  gap: 8px;
+}
+
+.sidebar-filters select {
+  padding: 8px;
+
+  font-size: var(--fs-xs);
+
   cursor: pointer;
-  padding: 0.3rem 0.5rem;
 }
 
-.workspace {
-  max-width: 1000px;
+.filter-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.filter-group label {
+  color: var(--color-text-muted);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 500;
+}
+
+/* ==========================
+Project List Header
+========================== */
+
+.sidebar-projects-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 8px 8px;
+
+  color: var(--color-text-muted);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+}
+
+.sidebar-projects-header h3 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.project-count {
+  min-width: 22px;
+
+  padding: 2px 6px;
+
+  border-radius: 999px;
+
+  background: var(--color-border);
+
+  color: var(--color-text);
+
+  font-size: 0.65rem;
+
+  text-align: center;
+}
+
+.project-navigation {
+  display: block;
+}
+
+/* ==========================
+Dashboard
+========================== */
+
+.dashboard {
+  min-width: 0;
+
+  background: var(--color-background);
+}
+
+.dashboard-main {
+  width: min(1180px, 100%);
+
+  min-height: calc(100vh - 68px);
+
   margin: 0 auto;
-  padding: 1rem 32px 4rem;
+
+  padding: 34px 40px 64px;
 }
 
-@media (max-width: 768px) {
-  .header-actions {
-    width: 100%;
-    justify-content: flex-start;
+/* ==========================
+Dashboard Empty State
+========================== */
+
+.dashboard-empty-state {
+  min-height: calc(100vh - 170px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: var(--color-text-muted);
+}
+
+.dashboard-empty-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: 50%;
+
+  color: var(--color-primary);
+
+  font-size: 1.25rem;
+}
+
+.dashboard-empty-eyebrow {
+  color: var(--color-primary);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.dashboard-empty-state h2 {
+  margin-top: 4px;
+
+  color: var(--color-text);
+
+  font-size: var(--fs-xl);
+
+  font-weight: 600;
+}
+
+.dashboard-empty-state p:last-child {
+  max-width: 380px;
+
+  margin-top: 6px;
+
+  font-size: var(--fs-sm);
+
+  line-height: 1.6;
+}
+
+/* ==========================
+Loading / Error
+========================== */
+
+.loading-state,
+.error-state {
+  padding: 24px 8px;
+
+  color: var(--color-text-muted);
+
+  font-size: var(--fs-sm);
+}
+
+.loading-state h2,
+.error-state h2 {
+  margin-bottom: 4px;
+
+  color: var(--color-text);
+
+  font-size: var(--fs-sm);
+}
+
+/* ==========================
+Responsive
+========================== */
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns:
+      230px
+      minmax(0, 1fr);
   }
-  .search-wrapper {
-    max-width: 100%;
+
+  .dashboard-main {
+    padding: 28px 24px 48px;
   }
-  .header-content, .filters-bar, .workspace {
-    padding-left: 20px;
-    padding-right: 20px;
+}
+
+@media (max-width: 700px) {
+  .app-header {
+    height: 62px;
+  }
+
+  .header-content {
+    padding: 0 16px;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar {
+    position: static;
+
+    height: auto;
+
+    max-height: none;
+
+    border-right: none;
+
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .dashboard-main {
+    padding: 24px 16px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0 12px;
+  }
+
+  .brand-mark {
+    display: none;
+  }
+
+  .brand-name {
+    font-size: 0.95rem;
+  }
+
+  .header-actions .primary-btn {
+    padding: 7px 10px;
+
+    font-size: var(--fs-xs);
   }
 }
