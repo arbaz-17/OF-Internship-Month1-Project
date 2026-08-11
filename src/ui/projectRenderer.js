@@ -1,11 +1,4 @@
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+import { escapeHtml } from "../utils/helpers.js";
 
 export function renderProjects(projects, selectedProjectId, onProjectSelect) {
   const container = document.getElementById("project-list");

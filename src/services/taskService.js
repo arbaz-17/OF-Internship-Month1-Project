@@ -64,8 +64,8 @@ export async function createTask(taskData) {
   const createdTask = await taskApi.createTask({
     ...taskData,
     title: taskData.title.trim(),
-    created_at: Date.now(),
-    updated_at: Date.now(),
+    created_at: now,
+    updated_at: now,
   });
 
   addTask(createdTask);
