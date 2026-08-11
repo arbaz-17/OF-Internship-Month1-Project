@@ -15,7 +15,7 @@ let projectPriorityFilter = "";
 let taskStatusFilter = "";
 let taskPriorityFilter = "";
 
-// ==================== Projects ====================
+//Projects
 
 export function getProjects() {
   return projects;
@@ -39,7 +39,7 @@ export function removeProjectState(projectId) {
   projects = projects.filter((project) => project.id !== projectId);
 }
 
-// ==================== Tasks ====================
+//Tasks
 
 export function getTasks() {
   return tasks;
@@ -67,7 +67,7 @@ export function removeTasksByProjectId(projectId) {
   tasks = tasks.filter((task) => task.project_id !== projectId);
 }
 
-// ==================== Selected Project ====================
+//Selected Project
 
 export function getSelectedProjectId() {
   return selectedProjectId;
@@ -77,7 +77,7 @@ export function setSelectedProjectId(projectId) {
   selectedProjectId = projectId;
 }
 
-// ==================== Project Edit Mode ====================
+//Proj Edit Mode
 
 export function getEditingProjectId() {
   return editingProjectId;
@@ -91,7 +91,7 @@ export function clearEditingProjectId() {
   editingProjectId = null;
 }
 
-// ==================== UI States ====================
+//UI States
 
 export function getLoading() {
   return isLoading;
@@ -113,7 +113,7 @@ export function clearError() {
   error = null;
 }
 
-// ==================== Project Search ====================
+//Project Search
 
 export function getProjectSearchQuery() {
   return projectSearchQuery;
@@ -127,9 +127,8 @@ export function clearProjectSearchQuery() {
   projectSearchQuery = "";
 }
 
-// ==================== Project Filters ====================
 
-// Status Filter
+//Project Filters
 
 export function getProjectStatusFilter() {
   return projectStatusFilter;
@@ -143,7 +142,6 @@ export function clearProjectStatusFilter() {
   projectStatusFilter = "";
 }
 
-// Priority Filter
 
 export function getProjectPriorityFilter() {
   return projectPriorityFilter;
@@ -157,9 +155,8 @@ export function clearProjectPriorityFilter() {
   projectPriorityFilter = "";
 }
 
-// ==================== Task Filters ====================
+//Task Filters
 
-// Status Filter
 
 export function getTaskStatusFilter() {
   return taskStatusFilter;
@@ -173,7 +170,6 @@ export function clearTaskStatusFilter() {
   taskStatusFilter = "";
 }
 
-// Priority Filter
 
 export function getTaskPriorityFilter() {
   return taskPriorityFilter;
@@ -186,8 +182,6 @@ export function setTaskPriorityFilter(priority) {
 export function clearTaskPriorityFilter() {
   taskPriorityFilter = "";
 }
-
-// Reset All Task Filters
 
 export function clearTaskFilters() {
   taskStatusFilter = "";
