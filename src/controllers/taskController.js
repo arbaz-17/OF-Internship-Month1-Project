@@ -17,14 +17,8 @@ export async function createNewTask(taskData) {
   return task;
 }
 
-export async function updateTask(
-  taskId,
-  taskData
-) {
-  const task = await updateExistingTask(
-    taskId,
-    taskData
-  );
+export async function updateTask(taskId, taskData) {
+  const task = await updateExistingTask(taskId, taskData);
 
   eventBus.emit(EVENTS.TASK_UPDATED, {
     task,

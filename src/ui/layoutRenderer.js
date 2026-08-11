@@ -9,10 +9,6 @@ export function renderProjectDetails(project) {
 
   if (!container) return;
 
-  /*
-   * No selected project
-   */
-
   if (!project) {
     container.innerHTML = `
       <section
@@ -44,14 +40,8 @@ export function renderProjectDetails(project) {
     return;
   }
 
-  /*
-   * Selected project
-   */
-
   const priority = project.priority || "medium";
-
   const taskStatusFilter = getTaskStatusFilter();
-
   const taskPriorityFilter = getTaskPriorityFilter();
 
   container.innerHTML = `

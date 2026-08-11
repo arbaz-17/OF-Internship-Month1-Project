@@ -35,20 +35,15 @@ export function renderProjects(projects, selectedProjectId, onProjectSelect) {
 
   projects.forEach((project) => {
     const item = document.createElement("button");
-
     item.type = "button";
-
     item.className = "project-nav-item";
-
     item.dataset.projectId = project.id;
 
     const isSelected = project.id === selectedProjectId;
 
     if (isSelected) {
       item.classList.add("active");
-
       item.setAttribute("aria-current", "page");
-
       item.setAttribute("aria-label", `${project.name}, selected project`);
     } else {
       item.setAttribute("aria-label", `Open project ${project.name}`);

@@ -15,7 +15,6 @@ const focusableSelector = `
 
 export function openModal(modalId) {
   const modal = document.getElementById(modalId);
-
   if (!modal) return;
 
   const activeElement = document.activeElement;
@@ -42,14 +41,11 @@ export function closeModal(modalId) {
   const modal = document.getElementById(modalId);
 
   if (!modal) return;
-
   modal.classList.remove("open");
   modal.hidden = true;
 
   document.body.classList.remove("modal-open");
-
   const previousElement = modalFocusState.get(modalId);
-
   modalFocusState.delete(modalId);
 
   if (
@@ -95,7 +91,6 @@ function trapFocus(event, modal) {
     event.preventDefault();
     return;
   }
-
   const firstElement = focusableElements[0];
   const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -104,7 +99,6 @@ function trapFocus(event, modal) {
 
     lastElement.focus();
   }
-
   if (!event.shiftKey && document.activeElement === lastElement) {
     event.preventDefault();
 
@@ -113,10 +107,8 @@ function trapFocus(event, modal) {
 }
 
 export function bindModalButtons() {
-  // Project Modal
 
   const projectOpen = document.getElementById("open-project-modal");
-
   const projectClose = document.getElementById("close-project-modal");
 
   projectOpen?.addEventListener("click", () => {
@@ -129,10 +121,8 @@ export function bindModalButtons() {
     closeModal("project-modal");
   });
 
-  // Task Modal
 
   const taskClose = document.getElementById("close-task-modal");
-
   taskClose?.addEventListener("click", () => {
     closeModal("task-modal");
   });

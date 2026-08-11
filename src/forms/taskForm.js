@@ -4,22 +4,15 @@ import {
   deleteTask,
 } from "../controllers/taskController.js";
 
-import {
-  getSelectedProjectId,
-} from "../state/appState.js";
+import { getSelectedProjectId } from "../state/appState.js";
 
-import {
-  getTaskById,
-} from "../services/taskService.js";
+import { getTaskById } from "../services/taskService.js";
 
 import { closeModal } from "../ui/modal.js";
 import { openModal } from "../ui/modal.js";
 import { showConfirmation } from "../ui/confirmModal.js";
 
-import {
-  setButtonLoading,
-  resetButton,
-} from "../ui/buttonLoading.js";
+import { setButtonLoading, resetButton } from "../ui/buttonLoading.js";
 
 let editingTaskId = null;
 
@@ -28,17 +21,12 @@ export function initializeTaskForm() {
 
   form.addEventListener("submit", handleSubmit);
 
-  document.addEventListener(
-    "click",
-    handleTaskActions
-  );
+  document.addEventListener("click", handleTaskActions);
 }
 
 async function handleSubmit(event) {
   event.preventDefault();
-  const submitButton = document.getElementById(
-  "task-submit-btn"
-);
+  const submitButton = document.getElementById("task-submit-btn");
 
   const taskData = {
     project_id: getSelectedProjectId(),
@@ -50,19 +38,11 @@ async function handleSubmit(event) {
     due_date: document.getElementById("task-due-date").value,
   };
 
-setButtonLoading(
-  submitButton,
-  editingTaskId
-    ? "Updating..."
-    : "Creating..."
-);
+  setButtonLoading(submitButton, editingTaskId ? "Updating..." : "Creating...");
 
-try {
+  try {
     if (editingTaskId) {
-      await updateTask(
-        editingTaskId,
-        taskData
-      );
+      await updateTask(editingTaskId, taskData);
 
       editingTaskId = null;
     } else {
@@ -74,59 +54,49 @@ try {
   } catch (error) {
     console.error(error);
     alert(error.message);
-  }
-  finally {
-
+  } finally {
     resetButton(submitButton);
-
-}
+  }
 }
 
 async function handleTaskActions(event) {
-  const editButton =
-    event.target.closest(".edit-task");
+  const editButton = event.target.closest(".edit-task");
 
   if (editButton) {
-    populateTaskForm(
-      editButton.dataset.taskId
-    );
+    populateTaskForm(editButton.dataset.taskId);
     return;
   }
 
-const deleteButton =
-  event.target.closest(".delete-task");
+  const deleteButton = event.target.closest(".delete-task");
 
-if (deleteButton) {
-  const taskId = deleteButton.dataset.taskId;
+  if (deleteButton) {
+    const taskId = deleteButton.dataset.taskId;
 
-  const task = getTaskById(taskId);
+    const task = getTaskById(taskId);
 
-  showConfirmation({
-    title: "Delete Task",
-    message: `Are you sure you want to delete "${task.title}"?\n\nThis action cannot be undone.`,
-    confirmText: "Delete Task",
+    showConfirmation({
+      title: "Delete Task",
+      message: `Are you sure you want to delete "${task.title}"?\n\nThis action cannot be undone.`,
+      confirmText: "Delete Task",
 
-    onConfirm: async () => {
-      try {
-        await deleteTask(taskId);
-      } catch (error) {
-        console.error(error);
-        alert(error.message);
-      }
-    },
-  });
+      onConfirm: async () => {
+        try {
+          await deleteTask(taskId);
+        } catch (error) {
+          console.error(error);
+          alert(error.message);
+        }
+      },
+    });
 
-  return;
-}
+    return;
+  }
 
-  const statusSelect =
-    event.target.closest(".task-status");
+  const statusSelect = event.target.closest(".task-status");
 
   if (statusSelect) {
     try {
-      const task = getTaskById(
-        statusSelect.dataset.taskId
-      );
+      const task = getTaskById(statusSelect.dataset.taskId);
 
       await updateTask(task.id, {
         ...task,
@@ -140,14 +110,11 @@ if (deleteButton) {
     return;
   }
 
-  const prioritySelect =
-    event.target.closest(".task-priority");
+  const prioritySelect = event.target.closest(".task-priority");
 
   if (prioritySelect) {
     try {
-      const task = getTaskById(
-        prioritySelect.dataset.taskId
-      );
+      const task = getTaskById(prioritySelect.dataset.taskId);
 
       await updateTask(task.id, {
         ...task,
@@ -168,39 +135,23 @@ function populateTaskForm(taskId) {
   editingTaskId = taskId;
   openModal("task-modal");
 
-  document.getElementById("task-title").value =
-    task.title;
-
-  document.getElementById("task-description").value =
-    task.description;
-
-  document.getElementById("task-priority").value =
-    task.priority;
-
-  document.getElementById("task-status").value =
-    task.status;
-
-    document.getElementById("task-start-date").value =
-  task.start_date
+  document.getElementById("task-title").value = task.title;
+  document.getElementById("task-description").value = task.description;
+  document.getElementById("task-priority").value = task.priority;
+  document.getElementById("task-status").value = task.status;
+  document.getElementById("task-start-date").value = task.start_date
     ? task.start_date.split("T")[0]
     : "";
 
-document.getElementById("task-due-date").value =
-  task.due_date
+  document.getElementById("task-due-date").value = task.due_date
     ? task.due_date.split("T")[0]
     : "";
 
-document.getElementById(
-  "task-submit-btn"
-).textContent = "Save Changes";
+  document.getElementById("task-submit-btn").textContent = "Save Changes";
 }
 
 function formReset() {
   editingTaskId = null;
-
   document.getElementById("task-form").reset();
-  
-document.getElementById(
-  "task-submit-btn"
-).textContent = "Create Task";
+  document.getElementById("task-submit-btn").textContent = "Create Task";
 }
