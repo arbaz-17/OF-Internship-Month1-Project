@@ -18,7 +18,7 @@ function persistCurrentState() {
   });
 }
 
-// ==================== Queries ====================
+//Queries
 
 export function getAllTasks() {
   return getTasks();
@@ -35,18 +35,15 @@ export function getFilteredTasksByProjectId(projectId) {
   return getTasks()
     .filter((task) => task.project_id === projectId)
     .filter((task) => {
-      if (!statusFilter) {
-        return true;
+      if (statusFilter && task.status !== statusFilter) {
+        return false;
       }
 
-      return task.status === statusFilter;
-    })
-    .filter((task) => {
-      if (!priorityFilter) {
-        return true;
+      if (priorityFilter && task.priority !== priorityFilter) {
+        return false;
       }
 
-      return task.priority === priorityFilter;
+      return true;
     });
 }
 
@@ -54,12 +51,14 @@ export function getTaskById(taskId) {
   return getTasks().find((task) => task.id === taskId);
 }
 
-// ==================== CRUD ====================
+//CRUD
 
 export async function createTask(taskData) {
   if (!taskData.title?.trim()) {
     throw new Error("Task title is required.");
   }
+
+  const now = new Date().toISOString();
 
   const createdTask = await taskApi.createTask({
     ...taskData,
@@ -69,9 +68,7 @@ export async function createTask(taskData) {
   });
 
   addTask(createdTask);
-
   persistCurrentState();
-
   return createdTask;
 }
 
@@ -82,18 +79,20 @@ export async function updateExistingTask(taskId, taskData) {
     throw new Error("Task not found.");
   }
 
+  if (!taskData.title?.trim()) {
+    throw new Error("Task title is required.");
+  }
+
   const updatedTask = await taskApi.updateTask(taskId, {
     ...existingTask,
     ...taskData,
-    title: taskData.title?.trim() ?? existingTask.title,
+    title: taskData.title.trim(),
     created_at: existingTask.created_at,
     updated_at: new Date().toISOString(),
   });
 
   updateTaskState(updatedTask);
-
   persistCurrentState();
-
   return updatedTask;
 }
 
@@ -105,10 +104,7 @@ export async function deleteExistingTask(taskId) {
   }
 
   await taskApi.deleteTask(taskId);
-
   removeTaskState(taskId);
-
   persistCurrentState();
-
   return existingTask;
 }
